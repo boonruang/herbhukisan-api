@@ -1,7 +1,14 @@
+require('dotenv').config();
 const Sequelize = require('sequelize')
-const sequelize = new Sequelize('mkherbal','postgres','89632100',{
-  host: 'localhost',
-  port: '5432',
+
+const host = process.env.NODE_ENV_DB_HOST;
+const dbname = process.env.NODE_ENV_DB_NAME;
+const port = process.env.NODE_ENV_DB_PORT;
+const password = process.env.NODE_ENV_DB_PASSWORD;
+
+const sequelize = new Sequelize(dbname,'postgres',password,{
+  host: host,
+  port: port,
   dialect: 'postgres',
 })
 

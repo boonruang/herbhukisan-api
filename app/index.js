@@ -1,9 +1,10 @@
 const express = require('express')
 const cors = require('cors')
+require('dotenv').config();
 
 const app = express()
 
-const DEFAULT_PORT = 3001
+const DEFAULT_PORT = process.env.NODE_ENV_SERVICE_PORT
 
 app.use(cors())
 
