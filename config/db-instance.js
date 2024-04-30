@@ -12,6 +12,7 @@ const sequelize = new Sequelize(dbname,username,password,{
   host: host,
   port: port,
   dialect: 'postgres',
+  ssl: true
 })
 
 ;(async () => {
