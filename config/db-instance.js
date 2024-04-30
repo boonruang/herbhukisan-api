@@ -8,11 +8,19 @@ const port = process.env.NODE_ENV_DB_PORT;
 const username = process.env.NODE_ENV_DB_USERNAME;
 const password = process.env.NODE_ENV_DB_PASSWORD;
 
-const sequelize = new Sequelize(dbname,username,password,{
+const sequelize = new Sequelize({
+  database: dbname,
+  username: username,
+  password: password,
   host: host,
   port: port,
   dialect: 'postgres',
-  ssl: true
+  dialectOptions: {
+    ssl: {
+      require: true, // This will help you. But you will see nwe error
+      rejectUnauthorized: false // This line will fix new error
+    }
+  },
 })
 
 ;(async () => {
