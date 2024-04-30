@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node .",
-    "dev": "cross-env ENV='development' nodemon .",
+    "start": "node ./app",
+    "dev": "cross-env ENV='development' nodemon ./app",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

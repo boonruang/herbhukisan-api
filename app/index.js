@@ -11,18 +11,18 @@ app.use(cors())
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
-const role = require('./models/role')
-const user = require('./models/user')
+const role = require('../models/role')
+const user = require('../models/user')
 
 user.belongsTo(role)
 
 
-app.use('/api/v2/geoland', require('./app/api_geoland'))
-app.use('/api/v2/geosoil', require('./app/api_geosoil'))
-app.use('/api/v2/geosalt', require('./app/api_geosalt'))
-app.use('/api/v2/user', require('./app/api_user'))
-app.use('/api/v2/auth', require('./app/api_auth'))
-app.use('/api/v2/role', require('./app/api_role'))
+app.use('/api/v2/geoland', require('./api_geoland'))
+app.use('/api/v2/geosoil', require('./api_geosoil'))
+app.use('/api/v2/geosalt', require('./api_geosalt'))
+app.use('/api/v2/user', require('./api_user'))
+app.use('/api/v2/auth', require('./api_auth'))
+app.use('/api/v2/role', require('./api_role'))
 
 
   
