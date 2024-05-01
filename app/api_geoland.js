@@ -13,8 +13,10 @@ const { QueryTypes } = require('sequelize');
 //  @route                  GET  /api/v2/geoland/list
 //  @desc                   list all geosoils
 //  @access                 Private
-router.get('/list',async (req, res) => {
+router.get('/list/:lu_des_en',async (req, res) => {
   console.log('get geoland list API called')
+  let LU_DES_EN = req.params.lu_des_en || 'ANY'
+  console.log('LU_DES_EN',LU_DES_EN)    
   try {
     const geoLandFound = await sequelize.query(`
     SELECT json_build_object(
@@ -45,7 +47,9 @@ router.get('/list',async (req, res) => {
           )
       )
   )
-  FROM land_kanglerngchan;
+  FROM land_kanglerngchan
+  WHERE LU_DES_EN='${LU_DES_EN}';
+  ;
     `, {
         type: QueryTypes.SELECT,
       }); 
