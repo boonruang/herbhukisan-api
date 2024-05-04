@@ -15,12 +15,12 @@ const sequelize = new Sequelize({
   host: host,
   port: port,
   dialect: dbconnect,
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false
-    }
-  },
+  // dialectOptions: {
+  //   ssl: {
+  //     require: true,
+  //     rejectUnauthorized: false
+  //   }
+  // },
 })
 
 ;(async () => {
