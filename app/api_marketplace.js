@@ -38,9 +38,10 @@ router.get('/list/:search', async (req, res) => {
                   'tambon',tambon,
                   'amphoe',amphoe,
                   'province',province,
-                  'postcode',postcode,
+                  'postcode',postcode,                
                   'latitude',latitude,
-                  'longitude',longitude
+                  'longitude',longitude,
+                  'icon', 'place'
                   )
               )
           )
@@ -102,9 +103,10 @@ router.get('/list/:id', async (req, res) => {
                   'tambon',tambon,
                   'amphoe',amphoe,
                   'province',province,
-                  'postcode',postcode,
+                  'postcode',postcode,                 
                   'latitude',latitude,
-                  'longitude',longitude
+                  'longitude',longitude,
+                  'icon', 'place'
                   )
               )
           )
