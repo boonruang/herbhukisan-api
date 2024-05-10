@@ -136,4 +136,15 @@ router.get('/list/:id', async (req, res) => {
     }  
 })
 
+// Get marketplace by keyword
+// router.get('/keyword/:keyword', async (req, res) => {
+//   const { keyword } = req.params;
+//   let result = await marketplace.findAll({
+//     where: { name: { [Op.like]: `%${keyword}%` } }
+//   });
+//   console.log(': marketplace ' + JSON.stringify(result));
+//   res.json(result);
+// });
+
+
 module.exports = router

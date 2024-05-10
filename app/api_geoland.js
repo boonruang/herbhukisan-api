@@ -11,12 +11,10 @@ const sequelize = require('../config/db-instance')
 const { QueryTypes } = require('sequelize');
 
 //  @route                  GET  /api/v2/geoland/list/all
-//  @desc                   list all geosoils
+//  @desc                   list all geoland
 //  @access                 Private
 router.get('/list/all',async (req, res) => {
   console.log('get geoland list API called')
-  let LU_DES_EN = req.params.lu_des_en || 'ANY'
-  console.log('LU_DES_EN',LU_DES_EN)    
   try {
     const geoLandFound = await sequelize.query(`
         SELECT json_build_object(
@@ -71,12 +69,12 @@ router.get('/list/all',async (req, res) => {
     }  
 })
 
-//  @route                  GET  /api/v2/geoland/list
-//  @desc                   list all geosoils
+//  @route                  GET  /api/v2/geoland/list/:lu_des_en
+//  @desc                   list geoland by lu_des_en
 //  @access                 Private
 router.get('/list/:lu_des_en',async (req, res) => {
   console.log('get geoland list API called')
-  let LU_DES_EN = req.params.lu_des_en || 'ANY'
+  let LU_DES_EN = req.params.lu_des_en
   console.log('LU_DES_EN',LU_DES_EN)    
   try {
     const geoLandFound = await sequelize.query(`

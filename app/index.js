@@ -25,7 +25,6 @@ app.use('/api/v2/user', require('./api_user'))
 app.use('/api/v2/auth', require('./api_auth'))
 app.use('/api/v2/role', require('./api_role'))
 
-
   
 const PORT = DEFAULT_PORT
 
