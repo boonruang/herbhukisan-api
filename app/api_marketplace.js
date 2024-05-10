@@ -3,6 +3,7 @@ const router = express.Router()
 const marketplace = require('../models/marketplace')
 const sequelize = require('../config/db-instance')
 const { QueryTypes } = require('sequelize');
+const emptyPoint = require('../data/mockEmptyPoint.json')
 
 //  @route                  GET  /api/v2/marketplace/list
 //  @desc                   list all marketplaces
@@ -53,12 +54,20 @@ router.get('/list/:search', async (req, res) => {
         type: QueryTypes.SELECT,
       }); 
       if (geosoilFound) {
-        // console.log('geosoilFound in map', geosoilFound)
-        console.log('geosoilFound in map')
-        res.status(200).json({
-          status: 'ok',
-          result: geosoilFound[0].json_build_object,
-        })
+          console.log('geosoilFound1 in map', geosoilFound)
+          if (geosoilFound[0]?.json_build_object?.features == null) {
+            console.log('features null')
+            res.status(200).json({
+              status: 'ok',
+              result: emptyPoint
+            }) 
+          } else {
+            console.log('geosoilFound2 in map')
+            res.status(200).json({
+              status: 'ok',
+              result: geosoilFound[0].json_build_object,
+            })          
+          }
       } else {
         res.status(500).json({
           status: 'nok',
