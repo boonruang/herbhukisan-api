@@ -1,23 +1,23 @@
 const express = require('express')
 const router = express.Router()
-const marketplace = require('../models/marketplace')
+// const farmergroup = require('../models/farmergroup')
 const sequelize = require('../config/db-instance')
 const { QueryTypes } = require('sequelize');
 const emptyPoint = require('../data/mockEmptyPoint.json')
 
-//  @route                  GET  /api/v2/marketplace/list
-//  @desc                   list all marketplaces
+//  @route                  GET  /api/v2/farmergroup/list
+//  @desc                   list all farmergroup
 //  @access                 Private
 router.get('/list/:search', async (req, res) => {
-  console.log('get marketplace list API called')
+  console.log('get farmergroup list API called')
   let searchText = req.params.search
   if (searchText.length > 0 && searchText !== 'all' ) {
-   queryStr = `WHERE marketplacename LIKE '%${searchText}%' OR address LIKE '%${searchText}%' OR tambon LIKE '%${searchText}%' OR amphoe LIKE '%${searchText}%' OR province LIKE '%${searchText}%'`
+   queryStr = `WHERE farmergroupname LIKE '%${searchText}%' OR address LIKE '%${searchText}%' OR tambon LIKE '%${searchText}%' OR amphoe LIKE '%${searchText}%' OR province LIKE '%${searchText}%'`
   } else if (searchText == 'all') {
     queryStr = ''
   }
   try {
-        const markgetplaceFound = await sequelize.query(`
+        const farmergroupFound = await sequelize.query(`
         SELECT json_build_object(
           'type', 'FeatureCollection',
           'crs',  json_build_object(
@@ -34,7 +34,7 @@ router.get('/list/:search', async (req, res) => {
                   'properties', json_build_object(
                     -- list of fields
                   'Id', id,
-                  'marketplacename', marketplacename,
+                  'farmergroupname', farmergroupname,
                   'address', address,
                   'tambon',tambon,
                   'amphoe',amphoe,
@@ -47,25 +47,25 @@ router.get('/list/:search', async (req, res) => {
               )
           )
       )
-      FROM marketplaces
+      FROM farmergroup
       ${queryStr}
       ;
     `, {
         type: QueryTypes.SELECT,
       }); 
-      if (markgetplaceFound) {
-          console.log('markgetplaceFound1 in map', markgetplaceFound)
-          if (markgetplaceFound[0]?.json_build_object?.features == null) {
+      if (farmergroupFound) {
+          console.log('farmergroupFound1 in map', farmergroupFound)
+          if (farmergroupFound[0]?.json_build_object?.features == null) {
             console.log('features null')
             res.status(200).json({
               status: 'ok',
               result: emptyPoint
             }) 
           } else {
-            console.log('markgetplaceFound2 in map')
+            console.log('farmergroupFound2 in map')
             res.status(200).json({
               status: 'ok',
-              result: markgetplaceFound[0].json_build_object,
+              result: farmergroupFound[0].json_build_object,
             })          
           }
       } else {
