@@ -15,10 +15,18 @@ const farmergroup = sequelize.define(
       type: Sequelize.STRING,
       allowNull: false,
     },
-    address: {
+    no: {
       type: Sequelize.STRING,
       allowNull: false,
     },
+    moo: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },     
+    village : {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },       
     tambon: {
       type: Sequelize.STRING,
       allowNull: false,
@@ -33,8 +41,28 @@ const farmergroup = sequelize.define(
     },
     postcode: {
       type: Sequelize.STRING,
+      allowNull: true,
+    },
+    leader: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },    
+    cert: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
+    member: {
+      type: Sequelize.INTEGER,
       allowNull: false,
     },
+    area: {
+      type: Sequelize.FLOAT,
+      allowNull: false,
+    },    
+    cover : {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },        
     latitude: {
       type: Sequelize.FLOAT,
       allowNull: false,

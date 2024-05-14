@@ -35,14 +35,21 @@ router.get('/list/:search', async (req, res) => {
                     -- list of fields
                   'Id', id,
                   'farmergroupname', farmergroupname,
-                  'address', address,
-                  'tambon',tambon,
-                  'amphoe',amphoe,
-                  'province',province,
-                  'postcode',postcode,                
-                  'latitude',latitude,
-                  'longitude',longitude,
-                  'icon', 'place'
+                    'no', no,
+                    'moo',moo,
+                    'village',village,
+                    'tambon',tambon,
+                    'amphoe',amphoe,
+                    'province',province,
+                    'postcode',postcode,                
+                    'leader',leader,                
+                    'cert',cert,                
+                    'member',member,                
+                    'area',area,                
+                    'cover',cover,                
+                    'latitude',latitude,
+                    'longitude',longitude,
+                    'icon', 'place'
                   )
               )
           )
@@ -68,6 +75,76 @@ router.get('/list/:search', async (req, res) => {
               result: farmergroupFound[0].json_build_object,
             })          
           }
+      } else {
+        res.status(500).json({
+          status: 'nok',
+        })
+      } 
+
+    } catch (error) {
+      res.status(500).json({
+        Error: error.toString(),
+      })
+    }  
+})
+
+//  @route                  GET  /api/v2/farmergroup/list
+//  @desc                   list all farmergroups select by Id
+//  @access                 Private
+router.get('/select/:id',async (req, res) => {
+  console.log('get farmergroup select by id API called')
+  let ID = req.params.id  || 'ANY'
+  console.log('ID',ID)  
+  try {
+    const farmergroupFound = await sequelize.query(`
+          SELECT json_build_object(
+            'type', 'FeatureCollection',
+            'crs',  json_build_object(
+                'type',      'name', 
+                'properties', json_build_object(
+                    'name', 'EPSG:4326'  
+                )
+            ), 
+            'features', json_agg(
+                json_build_object(
+                    'type',       'Feature',
+                    'id',         'id',
+                    'geometry',   ST_AsGeoJSON(ST_MakePoint(longitude, latitude))::json,
+                    'properties', json_build_object(
+                      -- list of fields
+                    'Id', id,
+                    'farmergroupname', farmergroupname,
+                    'address', no,
+                    'moo',moo,
+                    'village',village,
+                    'tambon',tambon,
+                    'amphoe',amphoe,
+                    'province',province,
+                    'postcode',postcode,                
+                    'leader',leader,                
+                    'cert',cert,                
+                    'member',member,                
+                    'area',area,                
+                    'cover',cover,                
+                    'latitude',latitude,
+                    'longitude',longitude,
+                    'icon', 'place'
+                    )
+                )
+            )
+        )
+        FROM farmergroup
+        WHERE id='${ID}';
+    `, {
+        type: QueryTypes.SELECT,
+      }); 
+      if (farmergroupFound) {
+        // console.log('farmergroupFound in map', farmergroupFound)
+        console.log('farmergroupFound in map')
+        res.status(200).json({
+          status: 'ok',
+          result: farmergroupFound[0].json_build_object,
+        })
       } else {
         res.status(500).json({
           status: 'nok',
