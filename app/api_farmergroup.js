@@ -12,7 +12,7 @@ router.get('/list/:search', async (req, res) => {
   console.log('get farmergroup list API called')
   let searchText = req.params.search
   if (searchText.length > 0 && searchText !== 'all' ) {
-   queryStr = `WHERE farmergroupname LIKE '%${searchText}%' OR address LIKE '%${searchText}%' OR tambon LIKE '%${searchText}%' OR amphoe LIKE '%${searchText}%' OR province LIKE '%${searchText}%'`
+   queryStr = `WHERE farmergroupname LIKE '%${searchText}%' OR tambon LIKE '%${searchText}%' OR amphoe LIKE '%${searchText}%' OR province LIKE '%${searchText}%'`
   } else if (searchText == 'all') {
     queryStr = ''
   }

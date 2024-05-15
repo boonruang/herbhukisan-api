@@ -27,4 +27,34 @@ router.get('/list', async (req, res) => {
   }
 })
 
+//  @route                  GET  /api/v2/herbal/:id
+//  @desc                   Get herbal by Id
+//  @access                 Private
+router.get('/:id', async (req, res) => {
+  console.log('get herbal by Id API called')
+  let id = req.params.id
+
+  try {
+    const herbalFound = await herbal.findOne({
+      where: { id },
+    })
+
+    if (herbalFound) {
+      // res.status(200).json(herbalFound)
+      res.status(200).json({
+        status: 'ok',
+        result: herbalFound,
+      })
+    } else {
+      res.status(500).json({
+        result: 'not found',
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      error,
+    })
+  }
+})
+
 module.exports = router
