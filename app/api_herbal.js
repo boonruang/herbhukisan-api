@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const herbal = require('../models/herbal')
+const farmergroup = require('../models/farmergroup')
 
 //  @route                  GET  /api/v2/herbal/list
 //  @desc                   list all herbals
@@ -8,7 +9,11 @@ const herbal = require('../models/herbal')
 router.get('/list', async (req, res) => {
   console.log('get herbal list API called')
   try {
-    const herbalFound = await herbal.findAll()
+    const herbalFound = await herbal.findAll({
+      include: {
+        model: farmergroup
+      }
+    })
     if (herbalFound) {
       console.log('herbalFound in list API: ', herbalFound)
       res.status(200).json({

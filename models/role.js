@@ -17,7 +17,7 @@ const role = sequelize.define(
     },
   },
   {
-    //option
+    timestamps: false,
   },
 )
 

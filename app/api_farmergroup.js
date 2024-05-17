@@ -1,9 +1,45 @@
 const express = require('express')
 const router = express.Router()
-// const farmergroup = require('../models/farmergroup')
+const farmergroup = require('../models/farmergroup')
+const herbal = require('../models/herbal')
+// const farmergroupherbal = require('../models/farmergroupherbal')
 const sequelize = require('../config/db-instance')
 const { QueryTypes } = require('sequelize');
 const emptyPoint = require('../data/mockEmptyPoint.json')
+
+
+//  @route                  GET  /api/v2/farmergroup/list
+//  @desc                   list all farmergroups
+//  @access                 Private
+router.get('/list', async (req, res) => {
+  console.log('get farmergroup list API called')
+  try {
+    const farmergroupFound = await farmergroup.findAll({
+      include: {
+        model: herbal,
+        // attributes: ['id','herbalname','commonname'],
+        // through: {
+        //    model: farmergroupherbal
+        // }
+       },      
+    })
+    if (farmergroupFound) {
+      console.log('farmergroupFound in list API: ', farmergroupFound)
+      res.status(200).json({
+        status: 'ok',
+        result: farmergroupFound,
+      })
+    } else {
+      res.status(500).json({
+        status: 'nok',
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      Error: error.toString(),
+    })
+  }
+})
 
 //  @route                  GET  /api/v2/farmergroup/list
 //  @desc                   list all farmergroup
@@ -93,57 +129,22 @@ router.get('/list/:search', async (req, res) => {
 //  @access                 Private
 router.get('/select/:id',async (req, res) => {
   console.log('get farmergroup select by id API called')
-  let ID = req.params.id  || 'ANY'
-  console.log('ID',ID)  
+  let id = req.params.id
+  console.log('id',id)  
   try {
-    const farmergroupFound = await sequelize.query(`
-          SELECT json_build_object(
-            'type', 'FeatureCollection',
-            'crs',  json_build_object(
-                'type',      'name', 
-                'properties', json_build_object(
-                    'name', 'EPSG:4326'  
-                )
-            ), 
-            'features', json_agg(
-                json_build_object(
-                    'type',       'Feature',
-                    'id',         'id',
-                    'geometry',   ST_AsGeoJSON(ST_MakePoint(longitude, latitude))::json,
-                    'properties', json_build_object(
-                      -- list of fields
-                    'Id', id,
-                    'farmergroupname', farmergroupname,
-                    'address', no,
-                    'moo',moo,
-                    'village',village,
-                    'tambon',tambon,
-                    'amphoe',amphoe,
-                    'province',province,
-                    'postcode',postcode,                
-                    'leader',leader,                
-                    'cert',cert,                
-                    'member',member,                
-                    'area',area,                
-                    'cover',cover,                
-                    'latitude',latitude,
-                    'longitude',longitude,
-                    'icon', 'place'
-                    )
-                )
-            )
-        )
-        FROM farmergroup
-        WHERE id='${ID}';
-    `, {
-        type: QueryTypes.SELECT,
-      }); 
+    const farmergroupFound = await farmergroup.findOne({
+      where : { id },
+      include: {
+        model: herbal,
+      }
+    }); 
+
       if (farmergroupFound) {
         // console.log('farmergroupFound in map', farmergroupFound)
         console.log('farmergroupFound in map')
         res.status(200).json({
           status: 'ok',
-          result: farmergroupFound[0].json_build_object,
+          result: farmergroupFound,
         })
       } else {
         res.status(500).json({

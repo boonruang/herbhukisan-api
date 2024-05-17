@@ -33,9 +33,15 @@ const herbal = sequelize.define(
     },        
   },
   {
-    timestamps: false
+    timestamps: false,
   },
 )
+
+// herbal.associate = (models) => {
+//   herbal.belongsToMany(models.farmergroup,{
+//     through: "farmergroupherbals"
+//   })
+// }
 
 ;(async () => {
   await herbal.sync({ force: false })
