@@ -98,7 +98,7 @@ router.get('/list', async (req, res) => {
 //  @route                  GET  /api/v2/herbal/:id
 //  @desc                   Get herbal by Id
 //  @access                 Private
-router.get('/:id', async (req, res) => {
+router.get('/select/:id', async (req, res) => {
   console.log('get herbal by Id API called')
   let id = req.params.id
 
