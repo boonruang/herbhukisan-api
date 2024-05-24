@@ -14,23 +14,11 @@ const farmergroupherbal = sequelize.define(
     },
     farmergroupId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
-        // references: {
-        //   model: {
-        //     tableName: 'farmergroup',
-        //   },
-        //   key: 'id',
-        // },        
+        allowNull: false,      
       },
     herbalId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
-        // references: {
-        //   model: {
-        //     tableName: 'herbals',
-        //   },
-        //   key: 'id',
-        // },         
+        allowNull: false,         
       },
   },
   {

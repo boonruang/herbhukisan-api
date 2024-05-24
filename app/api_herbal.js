@@ -73,6 +73,9 @@ router.get('/list', async (req, res) => {
   console.log('get herbal API called')
   try {
     const herbalFound = await herbal.findAll({
+      order: [
+        ['id','ASC']
+      ],
       include: {
         model: farmergroup
       }
@@ -153,5 +156,34 @@ router.post('/', async (req, res) => {
     });
   }
 });
+
+
+//  @route                  POST  /api/v2/herbal
+//  @desc                   Post add herbal
+//  @access                 Private
+router.get('/newid', async (req, res) => {
+  console.log('herbal newid is called')
+  
+  try {
+    const idFound = await herbal.findOne({
+      order: [ [ 'id', 'DESC' ]],
+    })
+
+    if (idFound) {
+      res.status(200).json({
+        status: 'ok',
+        result: idFound.dataValues.id+1,
+      })
+    } else {
+      res.status(500).json({
+        result: 'not found',
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      error,
+    })
+  }
+})
 
 module.exports = router
