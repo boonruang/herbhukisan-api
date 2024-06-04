@@ -43,7 +43,7 @@ router.get('/list/:search', async (req, res) => {
             {herbalname: {[Op.like]: '%' + searchText + '%'}},
             {commonname: {[Op.like]: '%' + searchText + '%'}},
             {scientificname: {[Op.like]: '%' + searchText + '%'}},
-            {akaname: {[Op.like]: '%' + searchText + '%'}}
+            {othername: {[Op.like]: '%' + searchText + '%'}}
           ]
         }
     })
