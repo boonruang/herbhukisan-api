@@ -23,7 +23,7 @@ const benefit = sequelize.define(
 )
 
 ;(async () => {
-  await benefit.sync({ force: true })
+  await benefit.sync({ force: false })
 })()
 
 module.exports = benefit

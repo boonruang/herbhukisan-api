@@ -36,7 +36,7 @@ herbal.belongsToMany(reference,{
 })
 
 ;(async () => {
-  await herbalreference.sync({ force: true })
+  await herbalreference.sync({ force: false })
 })()
 
 module.exports = herbalreference

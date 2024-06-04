@@ -23,7 +23,7 @@ const reference = sequelize.define(
 )
 
 ;(async () => {
-  await reference.sync({ force: true })
+  await reference.sync({ force: false })
 })()
 
 module.exports = reference

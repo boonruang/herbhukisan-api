@@ -36,7 +36,7 @@ herbal.belongsToMany(benefit,{
 })
 
 ;(async () => {
-  await herbalbenefit.sync({ force: true })
+  await herbalbenefit.sync({ force: false })
 })()
 
 module.exports = herbalbenefit
