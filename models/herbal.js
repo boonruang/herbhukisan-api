@@ -44,7 +44,7 @@ const herbal = sequelize.define(
 // }
 
 ;(async () => {
-  await herbal.sync({ force: true })
+  await herbal.sync({ force: false })
 })()
 
 module.exports = herbal
