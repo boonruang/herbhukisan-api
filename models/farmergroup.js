@@ -85,7 +85,7 @@ const farmergroup = sequelize.define(
 // }
   
 ;(async () => {
-  await farmergroup.sync({ force: false })
+  await farmergroup.sync({ force: true })
 })()
 
 module.exports = farmergroup
