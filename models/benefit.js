@@ -1,0 +1,29 @@
+const Sequelize = require('sequelize')
+const sequelize = require('../config/db-instance')
+
+const benefit = sequelize.define(
+  'benefit',
+  {
+    // attributes
+    id: {
+      type: Sequelize.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+      allowNull: false,
+    },
+    benefitname: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+  },
+  {
+    timestamps: false,
+    tableName: "benefit",
+  },
+)
+
+;(async () => {
+  await benefit.sync({ force: true })
+})()
+
+module.exports = benefit

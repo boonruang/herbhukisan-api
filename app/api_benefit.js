@@ -1,0 +1,70 @@
+const express = require('express')
+const router = express.Router()
+const benefit = require('../models/benefit')
+const herbal = require('../models/herbal')
+
+//  @route                  GET  /api/v2/benefit/list
+//  @desc                   list all benefits
+//  @access                 Private
+router.get('/list', async (req, res) => {
+  console.log('get benefit list API called')
+  try {
+    const benefitFound = await benefit.findAll({
+      // include: {
+      //   model: herbal,
+      //  },      
+    })
+    if (benefitFound) {
+      console.log('benefitFound in list API: ', benefitFound)
+      res.status(200).json({
+        status: 'ok',
+        result: benefitFound,
+      })
+    } else {
+      res.status(500).json({
+        status: 'nok',
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      Error: error.toString(),
+    })
+  }
+})
+
+//  @route                  GET  /api/v2/benefit/list
+//  @desc                   list all benefits select by Id
+//  @access                 Private
+router.get('/select/:id',async (req, res) => {
+  console.log('get benefit select by id API called')
+  let id = req.params.id
+  console.log('id',id)  
+  try {
+    const benefitFound = await benefit.findOne({
+      where : { id },
+      include: {
+        model: herbal,
+      }
+    }); 
+
+      if (benefitFound) {
+        // console.log('benefitFound in map', benefitFound)
+        console.log('benefitFound in map')
+        res.status(200).json({
+          status: 'ok',
+          result: benefitFound,
+        })
+      } else {
+        res.status(500).json({
+          status: 'nok',
+        })
+      } 
+
+    } catch (error) {
+      res.status(500).json({
+        Error: error.toString(),
+      })
+    }  
+})
+
+module.exports = router
