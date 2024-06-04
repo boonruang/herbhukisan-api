@@ -23,11 +23,11 @@ const herbal = sequelize.define(
       type: Sequelize.STRING,
       allowNull: false,
     },
-    akaname: {
+    othername: {
       type: Sequelize.STRING,
       allowNull: false,
     },        
-    cover : {
+    image : {
       type: Sequelize.STRING,
       allowNull: false,
     },        

@@ -59,7 +59,7 @@ const farmergroup = sequelize.define(
       type: Sequelize.FLOAT,
       allowNull: false,
     },    
-    cover : {
+    image : {
       type: Sequelize.STRING,
       allowNull: false,
     },        

@@ -82,7 +82,7 @@ router.get('/list/:search', async (req, res) => {
                     'cert',cert,                
                     'member',member,                
                     'area',area,                
-                    'cover',cover,                
+                    'image',image,                
                     'latitude',latitude,
                     'longitude',longitude,
                     'icon', 'place'
