@@ -21,6 +21,9 @@ router.get('/list', async (req, res) => {
         // through: {
         //    model: farmergroupherbal
         // }
+        through: {
+          attributes: []
+        }        
        },      
     })
     if (farmergroupFound) {

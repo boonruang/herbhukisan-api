@@ -12,7 +12,7 @@ const property = sequelize.define(
       allowNull: false,
     },
     propertyname: {
-      type: Sequelize.STRING,
+      type: Sequelize.TEXT,
       allowNull: false,
     },
   },

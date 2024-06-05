@@ -12,7 +12,7 @@ const benefit = sequelize.define(
       allowNull: false,
     },
     benefitname: {
-      type: Sequelize.STRING,
+      type: Sequelize.TEXT,
       allowNull: false,
     },
   },

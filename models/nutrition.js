@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize')
 const sequelize = require('../config/db-instance')
 
-const reference = sequelize.define(
-  'reference',
+const nutrition = sequelize.define(
+  'nutrition',
   {
     // attributes
     id: {
@@ -11,19 +11,19 @@ const reference = sequelize.define(
       autoIncrement: true,
       allowNull: false,
     },
-    referencename: {
+    nutritionname: {
       type: Sequelize.TEXT,
       allowNull: false,
     },
   },
   {
     timestamps: false,
-    tableName: "reference",
+    tableName: "nutrition",
   },
 )
 
 ;(async () => {
-  await reference.sync({ force: false })
+  await nutrition.sync({ force: false })
 })()
 
-module.exports = reference
+module.exports = nutrition

@@ -39,6 +39,10 @@ const herbal = sequelize.define(
       type: Sequelize.STRING,
       allowNull: true,
     },        
+    disease : {
+      type: Sequelize.TEXT,
+      allowNull: true,
+    },        
   },
   {
     timestamps: false,

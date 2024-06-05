@@ -5,6 +5,11 @@ const herbal = require('../models/herbal')
 const farmergroup = require('../models/farmergroup')
 const constants = require('../config/constant')
 const Sequelize = require('sequelize')
+const property = require('../models/property')
+const character = require('../models/character')
+const benefit = require('../models/benefit')
+const reference = require('../models/reference')
+const nutrition = require('../models/nutrition')
 const Op = Sequelize.Op
 
 // Upload Image
@@ -76,9 +81,44 @@ router.get('/list', async (req, res) => {
       order: [
         ['id','ASC']
       ],
-      include: {
-        model: farmergroup
-      }
+      include : [
+        {
+          model: farmergroup,
+          through: {
+            attributes: []
+          }
+        },
+        // {
+        //   model: property,
+        //   through: {
+        //     attributes: []
+        //   }
+        // },        
+        // {
+        //   model: character,
+        //   through: {
+        //     attributes: []
+        //   }
+        // },        
+        // {
+        //   model: benefit,
+        //   through: {
+        //     attributes: []
+        //   }
+        // },        
+        // {
+        //   model: reference,
+        //   through: {
+        //     attributes: []
+        //   }
+        // },        
+        // {
+        //   model: nutrition,
+        //   through: {
+        //     attributes: []
+        //   }
+        // },        
+    ]
     })
     if (herbalFound) {
       console.log('herbalFound in list API: ', herbalFound)
@@ -108,6 +148,44 @@ router.get('/select/:id', async (req, res) => {
   try {
     const herbalFound = await herbal.findOne({
       where: { id },
+      include : [
+        {
+        model: farmergroup,
+        through: {
+          attributes: []
+        }
+        },
+        // {
+        //   model: property,
+        //   through: {
+        //     attributes: []
+        //   }
+        // },        
+        // {
+        //   model: character,
+        //   through: {
+        //     attributes: []
+        //   }
+        // },        
+        // {
+        //   model: benefit,
+        //   through: {
+        //     attributes: []
+        //   }
+        // },        
+        // {
+        //   model: reference,
+        //   through: {
+        //     attributes: []
+        //   }
+        // },        
+        // {
+        //   model: nutrition,
+        //   through: {
+        //     attributes: []
+        //   }
+        // },        
+    ]
     })
 
     if (herbalFound) {

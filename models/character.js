@@ -12,7 +12,7 @@ const character = sequelize.define(
       allowNull: false,
     },
     charactername: {
-      type: Sequelize.STRING,
+      type: Sequelize.TEXT,
       allowNull: false,
     },
   },
