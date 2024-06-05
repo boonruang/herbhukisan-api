@@ -1,4 +1,6 @@
 const express = require('express')
+const constants = require('../config/constant')
+const formidable = require('formidable')
 const router = express.Router()
 const herbalcharacter = require('../models/herbalcharacter')
 const character = require('../models/character')
@@ -65,5 +67,32 @@ router.get('/:id', async (req, res) => {
     })
   }
 })
+
+//  @route                  POST  /api/v2/herbalcharacter
+//  @desc                   Post add herbalcharacter
+//  @access                 Private
+router.post('/', async (req, res) => {
+  console.log('herbalcharacter add is called')
+  try {
+    const form = new formidable.IncomingForm();
+    console.log('form.parse(req)',form.parse(req))
+
+    form.parse(req, async (error, fields, files) => {
+      let result = await herbalcharacter.create(fields);
+      // result = await uploadImage(files, result);
+      console.log('req fields',fields)
+
+      res.json({
+        result: constants.kResultOk,
+        message: JSON.stringify(result)
+      });
+    });
+  } catch (error) {
+    res.json({
+      result: constants.kResultNok,
+      message: JSON.stringify(error)
+    });
+  }
+});
 
 module.exports = router

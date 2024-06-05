@@ -27,12 +27,28 @@ const herbalproperty = sequelize.define(
   },
 )
 
+// property.belongsToMany(herbal,{
+//     through: "herbalproperty",
+//   })
+
+// herbal.belongsToMany(property,{
+//   through: "herbalproperty",
+// })
+
 property.belongsToMany(herbal,{
-    through: "herbalproperty",
-  })
+  through: {
+    model: "herbalproperty",
+    unique: false
+},
+  constraints: false 
+})
 
 herbal.belongsToMany(property,{
-  through: "herbalproperty",
+  through: {
+    model: "herbalproperty",
+    unique: false
+},
+  constraints: false 
 })
 
 ;(async () => {

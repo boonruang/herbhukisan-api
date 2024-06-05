@@ -1,4 +1,6 @@
 const express = require('express')
+const constants = require('../config/constant')
+const formidable = require('formidable')
 const router = express.Router()
 const property = require('../models/property')
 const herbal = require('../models/herbal')
@@ -66,5 +68,32 @@ router.get('/select/:id',async (req, res) => {
       })
     }  
 })
+
+//  @route                  POST  /api/v2/property
+//  @desc                   Post add property
+//  @access                 Private
+router.post('/', async (req, res) => {
+  console.log('property add is called')
+  try {
+    const form = new formidable.IncomingForm();
+    console.log('form.parse(req)',form.parse(req))
+
+    form.parse(req, async (error, fields, files) => {
+      let result = await property.create(fields);
+      // result = await uploadImage(files, result);
+      console.log('req fields',fields)
+
+      res.json({
+        result: constants.kResultOk,
+        message: JSON.stringify(result)
+      });
+    });
+  } catch (error) {
+    res.json({
+      result: constants.kResultNok,
+      message: JSON.stringify(error)
+    });
+  }
+});
 
 module.exports = router

@@ -23,7 +23,7 @@ const property = sequelize.define(
 )
 
 ;(async () => {
-  await property.sync({ force: true })
+  await property.sync({ force: false })
 })()
 
 module.exports = property

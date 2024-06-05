@@ -1,11 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const formidable = require('formidable');
+const formidable = require('formidable')
 const herbal = require('../models/herbal')
 const farmergroup = require('../models/farmergroup')
-const constants = require('../config/constant');
+const constants = require('../config/constant')
 const Sequelize = require('sequelize')
-const Op = Sequelize.Op;
+const Op = Sequelize.Op
 
 // Upload Image
 uploadImage = async (files, doc) => {

@@ -27,13 +27,30 @@ const farmergroupherbal = sequelize.define(
   },
 )
 
+// farmergroup.belongsToMany(herbal,{
+//     through: "farmergroupherbals",
+//   })
+
+// herbal.belongsToMany(farmergroup,{
+//   through: "farmergroupherbals",
+// })
+
 farmergroup.belongsToMany(herbal,{
-    through: "farmergroupherbals",
-  })
+  through: {
+    model: "farmergroupherbals",
+    unique: false
+},
+  constraints: false 
+})
 
 herbal.belongsToMany(farmergroup,{
-  through: "farmergroupherbals",
+  through: {
+    model: "farmergroupherbals",
+    unique: false
+},
+  constraints: false 
 })
+
 
 // This work the same.
 // farmergroup.belongsToMany(herbal,{

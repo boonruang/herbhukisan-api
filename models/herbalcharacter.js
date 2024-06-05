@@ -27,12 +27,28 @@ const herbalcharacter = sequelize.define(
   },
 )
 
+// character.belongsToMany(herbal,{
+//     through: "herbalcharacter",
+//   })
+
+// herbal.belongsToMany(character,{
+//   through: "herbalcharacter",
+// })
+
 character.belongsToMany(herbal,{
-    through: "herbalcharacter",
-  })
+  through: {
+    model: "herbalcharacter",
+    unique: false
+},
+  constraints: false 
+})
 
 herbal.belongsToMany(character,{
-  through: "herbalcharacter",
+  through: {
+    model: "herbalcharacter",
+    unique: false
+},
+  constraints: false 
 })
 
 ;(async () => {
