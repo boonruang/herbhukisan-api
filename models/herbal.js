@@ -33,11 +33,11 @@ const herbal = sequelize.define(
     },        
     ph : {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: true,
     },        
     soil : {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: true,
     },        
   },
   {
