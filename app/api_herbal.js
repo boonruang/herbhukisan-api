@@ -48,7 +48,10 @@ router.get('/list/:search', async (req, res) => {
             {herbalname: {[Op.like]: '%' + searchText + '%'}},
             {commonname: {[Op.like]: '%' + searchText + '%'}},
             {scientificname: {[Op.like]: '%' + searchText + '%'}},
-            {othername: {[Op.like]: '%' + searchText + '%'}}
+            {othername: {[Op.like]: '%' + searchText + '%'}},
+            {ph: {[Op.like]: '%' + searchText + '%'}},
+            {soil: {[Op.like]: '%' + searchText + '%'}},
+            {disease: {[Op.like]: '%' + searchText + '%'}}
           ]
         }
     })
@@ -155,36 +158,36 @@ router.get('/select/:id', async (req, res) => {
           attributes: []
         }
         },
-        // {
-        //   model: property,
-        //   through: {
-        //     attributes: []
-        //   }
-        // },        
-        // {
-        //   model: character,
-        //   through: {
-        //     attributes: []
-        //   }
-        // },        
-        // {
-        //   model: benefit,
-        //   through: {
-        //     attributes: []
-        //   }
-        // },        
-        // {
-        //   model: reference,
-        //   through: {
-        //     attributes: []
-        //   }
-        // },        
-        // {
-        //   model: nutrition,
-        //   through: {
-        //     attributes: []
-        //   }
-        // },        
+        {
+          model: property,
+          through: {
+            attributes: []
+          }
+        },        
+        {
+          model: character,
+          through: {
+            attributes: []
+          }
+        },        
+        {
+          model: benefit,
+          through: {
+            attributes: []
+          }
+        },        
+        {
+          model: reference,
+          through: {
+            attributes: []
+          }
+        },        
+        {
+          model: nutrition,
+          through: {
+            attributes: []
+          }
+        },        
     ]
     })
 
