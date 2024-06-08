@@ -33,7 +33,6 @@ uploadImage = async (files, doc) => {
   }
 };
 
-
 //  @route                  GET  /api/v2/herbal/list/:search
 //  @desc                   list all herbals search
 //  @access                 Private
@@ -52,6 +51,43 @@ router.get('/list/:search', async (req, res) => {
             {ph: {[Op.like]: '%' + searchText + '%'}},
             {soil: {[Op.like]: '%' + searchText + '%'}},
             {disease: {[Op.like]: '%' + searchText + '%'}}
+          ]
+        }
+    })
+
+    if (herbalFound) {
+      console.log('herbalFound in list API: ', herbalFound)
+      res.status(200).json({
+        status: 'ok',
+        result: herbalFound,
+      })
+    } else {
+      res.status(500).json({
+        status: 'nok',
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      Error: error.toString(),
+    })
+  }
+})
+
+//  @route                  GET  /api/v2/herbal/show/:soil/:ph
+//  @desc                   show all herbals by soil and ph
+//  @access                 Private
+router.get('/show/:ph/:soil', async (req, res) => {
+  console.log('get herbal show API called')
+  let searchPh = req.params.ph
+  let searchSoil = req.params.soil
+  console.log ('ph and soil', searchPh + ' AND ' + searchSoil)
+
+  try {
+    const herbalFound = await herbal.findAll({
+        where: {
+          [Op.and]: [
+            {ph: {[Op.like]: '%' + searchPh + '%'}},
+            {soil: {[Op.like]: '%' + searchSoil + '%'}},
           ]
         }
     })

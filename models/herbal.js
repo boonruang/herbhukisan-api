@@ -20,11 +20,11 @@ const herbal = sequelize.define(
       allowNull: false,
     },
     scientificname: {
-      type: Sequelize.STRING,
+      type: Sequelize.TEXT,
       allowNull: false,
     },
     othername: {
-      type: Sequelize.STRING,
+      type: Sequelize.TEXT,
       allowNull: false,
     },        
     image : {
