@@ -95,14 +95,14 @@ router.get('/show/:ph/:soil', async (req, res) => {
               [Op.or]: [
                 {
                   [Op.and]: [
-                    {phStart: {[Op.lte]: phInputStart}},
-                    {phEnd: {[Op.gte]: phInputStart}},                    
+                    {phstart: {[Op.lte]: phInputStart}},
+                    {phend: {[Op.gte]: phInputStart}},                    
                   ]
                 },
                 {
                   [Op.and]: [
-                    {phStart: {[Op.lte]: phInputEnd}},
-                    {phEnd: {[Op.gte]: phInputEnd}},                    
+                    {phstart: {[Op.lte]: phInputEnd}},
+                    {phend: {[Op.gte]: phInputEnd}},                    
                   ]
                 },
               ]
