@@ -43,17 +43,19 @@ const herbal = sequelize.define(
       type: Sequelize.TEXT,
       allowNull: true,
     },        
+    phstart : {
+      type: Sequelize.FLOAT,
+      allowNull: true,
+    },        
+    phend : {
+      type: Sequelize.FLOAT,
+      allowNull: true,
+    },        
   },
   {
     timestamps: false,
   },
 )
-
-// herbal.associate = (models) => {
-//   herbal.belongsToMany(models.farmergroup,{
-//     through: "farmergroupherbals"
-//   })
-// }
 
 ;(async () => {
   await herbal.sync({ force: false })

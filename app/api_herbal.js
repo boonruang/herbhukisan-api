@@ -10,6 +10,8 @@ const character = require('../models/character')
 const benefit = require('../models/benefit')
 const reference = require('../models/reference')
 const nutrition = require('../models/nutrition')
+const sequelize = require('../config/db-instance')
+const { QueryTypes } = require('sequelize');
 const Op = Sequelize.Op
 
 // Upload Image
@@ -81,12 +83,30 @@ router.get('/show/:ph/:soil', async (req, res) => {
   let searchPh = req.params.ph
   let searchSoil = req.params.soil
   console.log ('ph and soil', searchPh + ' AND ' + searchSoil)
+  let phInputStart = parseFloat(req.params.ph.split('-')[0])  
+  let phInputEnd = parseFloat(req.params.ph.split('-')[1])  
+  console.log ('phInputStart, phInputEnd', phInputStart + ' || ' + phInputEnd)
 
   try {
     const herbalFound = await herbal.findAll({
         where: {
           [Op.and]: [
-            {ph: {[Op.like]: '%' + searchPh + '%'}},
+            {
+              [Op.or]: [
+                {
+                  [Op.and]: [
+                    {phStart: {[Op.lte]: phInputStart}},
+                    {phEnd: {[Op.gte]: phInputStart}},                    
+                  ]
+                },
+                {
+                  [Op.and]: [
+                    {phStart: {[Op.lte]: phInputEnd}},
+                    {phEnd: {[Op.gte]: phInputEnd}},                    
+                  ]
+                },
+              ]
+            },
             {soil: {[Op.like]: '%' + searchSoil + '%'}},
           ]
         }
@@ -275,8 +295,8 @@ router.post('/', async (req, res) => {
 });
 
 
-//  @route                  POST  /api/v2/herbal
-//  @desc                   Post add herbal
+//  @route                  GET  /api/v2/herbal/newid
+//  @desc                   Get new id
 //  @access                 Private
 router.get('/newid', async (req, res) => {
   console.log('herbal newid is called')
@@ -292,6 +312,36 @@ router.get('/newid', async (req, res) => {
         result: idFound.dataValues.id+1,
       })
     } else {
+      res.status(500).json({
+        result: 'not found',
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      error,
+    })
+  }
+})
+
+//  @route                  GET  /api/v2/herbal/updated
+//  @desc                   to update phStart and phEnd
+//  @access                 Private
+router.get('/updated', async (req, res) => {
+  console.log('herbal updated is called')
+
+  try {
+    const phFound = await sequelize.query(`
+      UPDATE herbals SET phstart=split_part(ph,'-',1)::real ,phend=split_part(ph,'-',2)::real ;
+     `, {
+         type: QueryTypes.UPDATE,
+     }); 
+ 
+     if (phFound) {
+       res.status(200).json({
+         status: 'ok',
+         result: phFound,
+       })
+      } else {
       res.status(500).json({
         result: 'not found',
       })
