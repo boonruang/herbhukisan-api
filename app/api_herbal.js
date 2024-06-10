@@ -331,7 +331,7 @@ router.get('/updated', async (req, res) => {
 
   try {
     const phFound = await sequelize.query(`
-      UPDATE herbals SET phstart=split_part(ph,'-',1)::real ,phend=split_part(ph,'-',2)::real ;
+      UPDATE herbals SET phstart=split_part(ph,'-',1)::real ,phend=split_part(ph,'-',2)::real WHERE ph IS NOT NULL;
      `, {
          type: QueryTypes.UPDATE,
      }); 
