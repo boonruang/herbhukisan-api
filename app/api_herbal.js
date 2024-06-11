@@ -87,46 +87,50 @@ router.get('/show/:ph/:soil', async (req, res) => {
   let phInputEnd = parseFloat(req.params.ph.split('-')[1])  
   console.log ('phInputStart, phInputEnd', phInputStart + ' || ' + phInputEnd)
 
-  try {
-    const herbalFound = await herbal.findAll({
-        where: {
-          [Op.and]: [
-            {
-              [Op.or]: [
-                {
-                  [Op.and]: [
-                    {phstart: {[Op.lte]: phInputStart}},
-                    {phend: {[Op.gte]: phInputStart}},                    
-                  ]
-                },
-                {
-                  [Op.and]: [
-                    {phstart: {[Op.lte]: phInputEnd}},
-                    {phend: {[Op.gte]: phInputEnd}},                    
-                  ]
-                },
-              ]
-            },
-            {soil: {[Op.like]: '%' + searchSoil + '%'}},
-          ]
-        }
-    })
-
-    if (herbalFound) {
-      console.log('herbalFound in list API: ', herbalFound)
-      res.status(200).json({
-        status: 'ok',
-        result: herbalFound,
+  if (req.params.ph && req.params.soil) {
+    try {
+      const herbalFound = await herbal.findAll({
+          where: {
+            [Op.and]: [
+              {
+                [Op.or]: [
+                  {
+                    [Op.and]: [
+                      {phstart: {[Op.lte]: phInputStart}},
+                      {phend: {[Op.gte]: phInputStart}},                    
+                    ]
+                  },
+                  {
+                    [Op.and]: [
+                      {phstart: {[Op.lte]: phInputEnd}},
+                      {phend: {[Op.gte]: phInputEnd}},                    
+                    ]
+                  },
+                ]
+              },
+              {soil: {[Op.like]: '%' + searchSoil + '%'}},
+            ]
+          }
       })
-    } else {
+
+      if (herbalFound) {
+        console.log('herbalFound in list API: ', herbalFound)
+        res.status(200).json({
+          status: 'ok',
+          result: herbalFound,
+        })
+      } else {
+        res.status(500).json({
+          status: 'nok',
+        })
+      }
+    } catch (error) {
       res.status(500).json({
-        status: 'nok',
+        Error: error.toString(),
       })
     }
-  } catch (error) {
-    res.status(500).json({
-      Error: error.toString(),
-    })
+  } else {
+    console.log('no req.params')
   }
 })
 
@@ -331,7 +335,7 @@ router.get('/updated', async (req, res) => {
 
   try {
     const phFound = await sequelize.query(`
-      UPDATE herbals SET phstart=split_part(ph,'-',1)::real ,phend=split_part(ph,'-',2)::real WHERE ph IS NOT NULL;
+      UPDATE herbals SET phstart=split_part(ph,'-',1)::real, phend=split_part(ph,'-',2)::real WHERE ph IS NOT NULL;
      `, {
          type: QueryTypes.UPDATE,
      }); 
