@@ -214,41 +214,41 @@ router.get('/select/:id', async (req, res) => {
       include : [
         {
         model: farmergroup,
-        through: {
-          attributes: []
-        }
+          through: {
+            attributes: []
+          }
         },
-        {
-          model: property,
-          through: {
-            attributes: []
-          }
-        },        
-        {
-          model: character,
-          through: {
-            attributes: []
-          }
-        },        
-        {
-          model: benefit,
-          through: {
-            attributes: []
-          }
-        },        
-        {
-          model: reference,
-          through: {
-            attributes: []
-          }
-        },        
-        {
-          model: nutrition,
-          through: {
-            attributes: []
-          }
-        },        
-    ]
+    //     {
+    //       model: property,
+    //       through: {
+    //         attributes: []
+    //       }
+    //     },        
+    //     {
+    //       model: character,
+    //       through: {
+    //         attributes: []
+    //       }
+    //     },        
+    //     {
+    //       model: benefit,
+    //       through: {
+    //         attributes: []
+    //       }
+    //     },        
+    //     {
+    //       model: reference,
+    //       through: {
+    //         attributes: []
+    //       }
+    //     },        
+    //     {
+    //       model: nutrition,
+    //       through: {
+    //         attributes: []
+    //       }
+    //     },        
+      ]
     })
 
     if (herbalFound) {
