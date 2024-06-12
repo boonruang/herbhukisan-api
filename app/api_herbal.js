@@ -13,6 +13,9 @@ const nutrition = require('../models/nutrition')
 const sequelize = require('../config/db-instance')
 const { QueryTypes } = require('sequelize');
 const Op = Sequelize.Op
+const request = require('request-promise')
+const cheerio = require('cheerio')
+const herbalPrice = require('../data/herbalPrice')
 
 // Upload Image
 uploadImage = async (files, doc) => {
@@ -344,6 +347,47 @@ router.get('/updated', async (req, res) => {
        res.status(200).json({
          status: 'ok',
          result: phFound,
+       })
+      } else {
+      res.status(500).json({
+        result: 'not found',
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      error,
+    })
+  }
+})
+
+//  @route                  GET  /api/v2/herbal/price
+//  @desc                   get scraping price
+//  @access                 Private
+router.get('/price', async (req, res) => {
+  console.log('herbal price scraping is called')
+
+  const URL = 'https://j-pad.net/%E0%B8%A3%E0%B8%B2%E0%B8%84%E0%B8%B2%E0%B8%AA%E0%B8%B4%E0%B8%99%E0%B8%84%E0%B9%89%E0%B8%B2%E0%B8%A7%E0%B8%B1%E0%B8%99%E0%B8%99%E0%B8%B5%E0%B9%89?cate=12';
+
+  try {
+
+    const response = await request(URL)
+    let $ = cheerio.load(response)
+
+    const data = [...$("table.table-bordered")].map(e =>
+      Object.fromEntries([...$(e).find("tr")].map(e =>
+        [...$(e).find("a,span")].map(e => $(e).text())
+      ))
+    );
+
+    let converted = Object.entries(data[0]).map(([key,value]) => ({name: key, price: value }) );
+    // console.log(converted);
+
+    let herbalData = converted.slice(1)
+ 
+     if (herbalData) {
+       res.status(200).json({
+         status: 'ok',
+         result: herbalData,
        })
       } else {
       res.status(500).json({
