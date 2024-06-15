@@ -16,6 +16,7 @@ const user = require('../models/user')
 
 user.belongsTo(role)
 
+app.use('/api/v2/price', require('./api_price'))
 app.use('/api/v2/geoland', require('./api_geoland'))
 app.use('/api/v2/geosoil', require('./api_geosoil'))
 app.use('/api/v2/geosalt', require('./api_geosalt'))
