@@ -10,14 +10,7 @@ const { QueryTypes } = require('sequelize');
 const Op = Sequelize.Op
 const request = require('request-promise')
 const cheerio = require('cheerio')
-
-let newDate = new Date()
-let date = newDate.getDate();
-let month = newDate.getMonth()+1;
-let year = newDate.getFullYear();
-
-console.log('newDate',newDate)
-let today = date+'-'+month+'-'+year
+const moment = require('moment-timezone')
 
 //  @route                  GET  /api/v2/price/year
 //  @desc                   list all priceyears
@@ -142,9 +135,14 @@ router.get('/day', async (req, res) => {
 
   const URL = 'https://j-pad.net/%E0%B8%A3%E0%B8%B2%E0%B8%84%E0%B8%B2%E0%B8%AA%E0%B8%B4%E0%B8%99%E0%B8%84%E0%B9%89%E0%B8%B2%E0%B8%A7%E0%B8%B1%E0%B8%99%E0%B8%99%E0%B8%B5%E0%B9%89?cate=12';
 
+  // let todayDetail = moment().format('DD-MM-YYYY HH:mm:ss')
+  // console.log('todayDetail is ',todayDetail)
+  
+  let today = moment().tz('Asia/Bangkok').format('DD-MM-YYYY')
+  console.log('Today is',today)
+
   try {
 
-    // console.log('Today is ',today)
     const resultToday = await priceday.findAll({ where: { date : today }})
     if (resultToday.length > 0) {
       // console.log('today data', resultToday)
@@ -172,7 +170,8 @@ router.get('/day', async (req, res) => {
     
         let dialypriceData = converted.slice(1) //to remove first object 
         // console.log('dialypriceData',dialypriceData)
-    
+
+
         const result = await priceday.bulkCreate(dialypriceData);
     
         if (result) {
