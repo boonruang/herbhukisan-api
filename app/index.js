@@ -6,7 +6,7 @@ const app = express()
 
 const DEFAULT_PORT = process.env.NODE_ENV_SERVICE_PORT
 
-app.use(cors())
+app.use(cors({credentials: true, origin: true}))
 
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
@@ -14,7 +14,7 @@ app.use(express.json())
 const role = require('../models/role')
 const user = require('../models/user')
 
-user.belongsTo(role)
+// user.belongsTo(role)
 
 app.use('/api/v2/dashboard', require('./api_dashboard'))
 app.use('/api/v2/price', require('./api_price'))
@@ -23,6 +23,7 @@ app.use('/api/v2/geosoil', require('./api_geosoil'))
 app.use('/api/v2/geosalt', require('./api_geosalt'))
 app.use('/api/v2/marketplace', require('./api_marketplace'))
 app.use('/api/v2/herbal', require('./api_herbal'))
+app.use('/api/v2/userrole', require('./api_userrole'))
 app.use('/api/v2/farmer', require('./api_farmer'))
 app.use('/api/v2/farmergroup', require('./api_farmergroup'))
 app.use('/api/v2/farmergroupherbal', require('./api_farmergroupherbal'))

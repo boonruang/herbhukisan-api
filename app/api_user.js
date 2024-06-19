@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const user = require('../models/user')
 const role = require('../models/role')
+const userrole = require('../models/userrole')
 const bcrypt = require('bcryptjs')
 const constants = require('../config/constant')
 const JWT = require('jsonwebtoken')
@@ -12,24 +13,18 @@ const formidable = require('formidable')
 //  @route                  GET  /api/v2/user/list
 //  @desc                   list all users
 //  @access                 Private
-router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
-  // const userFound = await user.findAll({
-  //   attributes: { exclude: ['password'] },
-  //   order: [['id', 'ASC']]
-  // })
+router.get('/list', async (req, res) => {
   console.log('get user list API called')
   try {
     const userFound = await user.findAll({
       attributes: { exclude: ['password'] },
       order: [['id', 'DESC']],
-      // where: {
-      //   roleId: 1,
-      // },
       include: [
         {
           model: role,
-          // attributes: ['id', 'name'],
-          attributes: ['id', 'name'],
+          through: {
+            attributes: []
+          }
         },
       ],
     })
@@ -87,7 +82,7 @@ router.post('/login', async (req, res) => {
         {
           id: userFound.id,
           username: userFound.username,
-          roleId: userFound.roleId,
+          // roleId: userFound.roleId,
           status: userFound.status,
         },
         JwtConfig.secret,
@@ -120,13 +115,12 @@ router.post('/', async (req, res) => {
   try {
     const form = new formidable.IncomingForm()
     form.parse(req, async (error, fields, files) => {
-      // console.log('Formidable Post fields: ', fields)
+      console.log('Formidable Post fields: ', fields)
       let firstname = fields.firstname
       let lastname = fields.lastname
       let username = fields.username
       let password = bcrypt.hashSync(fields.password, 8)
       let status = fields.status
-      let roleId = fields.roleId
       let userFound = await user.findOne({
         where: { username: fields.username },
       })
@@ -144,7 +138,6 @@ router.post('/', async (req, res) => {
           username,
           password,
           status,
-          roleId,
         })
 
         if (result) {
@@ -183,7 +176,7 @@ router.put('/', JwtMiddleware.checkToken, async (req, res) => {
         var password = bcrypt.hashSync(fields.password, 8)
       }
       let status = fields.status
-      var roleId = fields.roleId
+      // var roleId = fields.roleId
 
       console.log('Formidable Update fields: ', fields)
       console.log('Formidable Update Error: ', error)
@@ -194,7 +187,7 @@ router.put('/', JwtMiddleware.checkToken, async (req, res) => {
           username,
           password,
           status,
-          roleId,
+          // roleId,
         },
         { where: { id: fields.id } },
       )
@@ -242,7 +235,7 @@ router.get('/:id', JwtMiddleware.checkToken, async (req, res) => {
         firstname: userFound.firstname,
         lastname: userFound.lastname,
         status: userFound.status,
-        roleId: userFound.roleId,
+        // roleId: userFound.roleId,
       })
     } else {
       res.status(500).json({

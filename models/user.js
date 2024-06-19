@@ -32,16 +32,6 @@ const user = sequelize.define(
       allowNull: false,
       defaultValue: true,
     },
-    roleId: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-      references: {
-        model: {
-          tableName: 'roles',
-        },
-        key: 'id',
-      },
-    },
   },
   {
     timestamps: false,

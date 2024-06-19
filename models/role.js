@@ -15,6 +15,10 @@ const role = sequelize.define(
       type: Sequelize.STRING(15),
       allowNull: false,
     },
+    code: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+    },
   },
   {
     timestamps: false,
