@@ -69,20 +69,40 @@ router.get('/info', JwtMiddleware.checkToken, async (req, res) => {
 //  @access                 Public
 router.post('/login', async (req, res) => {
   const { username, password } = req.body
+  console.log('user login is called')
 
-  let userFound = await user.findOne({ where: { username: username } })
+  let userFound = await user.findOne({ 
+    where: { username: username },
+    include : {
+      model: role,
+      through: {
+        attributes: []
+      }
+    } 
+  })
   if (userFound != null) {
     // user found
+    // console.log('userFound not null',userFound)
 
     if (bcrypt.compareSync(password, userFound.password)) {
+
+      // console.log('user compared')
       // password match
       // Generate user token
+
+      const roleArr = await userFound.roles.map((item) => {
+        return item.code
+      })
+      
+      // if (roleArr) {
+      //   console.log('roleArr',roleArr)
+      // }
 
       let userToken = JWT.sign(
         {
           id: userFound.id,
           username: userFound.username,
-          // roleId: userFound.roleId,
+          roles: roleArr,
           status: userFound.status,
         },
         JwtConfig.secret,
@@ -92,9 +112,13 @@ router.post('/login', async (req, res) => {
         },
       )
 
+
+
       res.status(200).json({
         result: constants.kResultOk,
-        token: userToken,
+        // roles: [5150],
+        // roles: roleArr,
+        accessToken: userToken,
       })
     } else {
       res.json({
