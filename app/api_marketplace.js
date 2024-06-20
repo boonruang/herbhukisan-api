@@ -4,11 +4,12 @@ const marketplace = require('../models/marketplace')
 const sequelize = require('../config/db-instance')
 const { QueryTypes } = require('sequelize');
 const emptyPoint = require('../data/mockEmptyPoint.json')
+const JwtMiddleware = require('../config/Jwt-Middleware')
 
 //  @route                  GET  /api/v2/marketplace/list
 //  @desc                   list all marketplaces
 //  @access                 Private
-router.get('/list/:search', async (req, res) => {
+router.get('/list/:search', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get marketplace list API called')
   let searchText = req.params.search
   if (searchText.length > 0 && searchText !== 'all' ) {

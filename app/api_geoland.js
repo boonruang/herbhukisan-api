@@ -5,7 +5,7 @@ const router = express.Router()
 // const JWT = require('jsonwebtoken')
 // const JwtConfig = require('../config/Jwt-Config')
 // const formidable = require('formidable')
-// const JwtMiddleware = require('../config/Jwt-Middleware')
+const JwtMiddleware = require('../config/Jwt-Middleware')
 // const Sequelize = require('sequelize')
 const sequelize = require('../config/db-instance')
 const { QueryTypes } = require('sequelize');
@@ -13,7 +13,7 @@ const { QueryTypes } = require('sequelize');
 //  @route                  GET  /api/v2/geoland/list/all
 //  @desc                   list all geoland
 //  @access                 Private
-router.get('/list/all',async (req, res) => {
+router.get('/list/all', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get geoland list API called')
   try {
     const geoLandFound = await sequelize.query(`
@@ -72,7 +72,7 @@ router.get('/list/all',async (req, res) => {
 //  @route                  GET  /api/v2/geoland/list/:lu_des_en
 //  @desc                   list geoland by lu_des_en
 //  @access                 Private
-router.get('/list/:lu_des_en',async (req, res) => {
+router.get('/list/:lu_des_en', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get geoland list API called')
   let LU_DES_EN = req.params.lu_des_en
   console.log('LU_DES_EN',LU_DES_EN)    

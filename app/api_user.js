@@ -135,7 +135,7 @@ router.post('/login', async (req, res) => {
 //  @desc                   Add user use formidable on reactjs userCreate
 //  @access                 Private
 
-router.post('/', async (req, res) => {
+router.post('/', JwtMiddleware.checkToken, async (req, res) => {
   try {
     const form = new formidable.IncomingForm()
     form.parse(req, async (error, fields, files) => {

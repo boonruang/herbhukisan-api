@@ -4,11 +4,12 @@ const formidable = require('formidable')
 const router = express.Router()
 const character = require('../models/character')
 const herbal = require('../models/herbal')
+const JwtMiddleware = require('../config/Jwt-Middleware')
 
 //  @route                  GET  /api/v2/character/list
 //  @desc                   list all characters
 //  @access                 Private
-router.get('/list', async (req, res) => {
+router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get character list API called')
   try {
     const characterFound = await character.findAll({
@@ -37,7 +38,7 @@ router.get('/list', async (req, res) => {
 //  @route                  GET  /api/v2/character/list
 //  @desc                   list all characters select by Id
 //  @access                 Private
-router.get('/select/:id',async (req, res) => {
+router.get('/select/:id', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get character select by id API called')
   let id = req.params.id
   console.log('id',id)  
@@ -72,7 +73,7 @@ router.get('/select/:id',async (req, res) => {
 //  @route                  POST  /api/v2/character
 //  @desc                   Post add character
 //  @access                 Private
-router.post('/', async (req, res) => {
+router.post('/', JwtMiddleware.checkToken, async (req, res) => {
   console.log('character add is called')
   try {
     const form = new formidable.IncomingForm();

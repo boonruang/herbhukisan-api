@@ -8,12 +8,13 @@ const herbal = require('../models/herbal')
 const farmer = require('../models/farmer')
 const farmergroup = require('../models/farmergroup')
 const marketplace = require('../models/marketplace')
+const JwtMiddleware = require('../config/Jwt-Middleware')
 const Op = Sequelize.Op
 
 //  @route                  GET  /api/v2/dashboard/list
 //  @desc                   list all dashboards
 //  @access                 Private
-router.get('/list', async (req, res) => {
+router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get dashboard API called')
   try {
     const amountHerbal = await herbal.count()

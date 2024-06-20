@@ -10,11 +10,12 @@ const JwtConfig = require('../config/Jwt-Config')
 const constants = require('../config/constant')
 const role = require('../models/role')
 const userrole = require('../models/userrole')
+const JwtMiddleware = require('../config/Jwt-Middleware')
 
 //  @route                  POST  /api/v2/auth/verify
 //  @desc                   User authorization verify & get token
 //  @access                 Private
-router.post('/verify', async (req, res) => {
+router.post('/verify', JwtMiddleware.checkToken, async (req, res) => {
   let userToken = req.headers['authorization']
   JWT.verify(userToken, JwtConfig.secret, (error, data) => {
     if (error) {
@@ -33,7 +34,7 @@ router.post('/verify', async (req, res) => {
 //  @route                  POST  /api/v2/auth
 //  @desc                   User auth (login)
 //  @access                 Public
-router.post('/', async (req, res) => {
+router.post('/', JwtMiddleware.checkToken, async (req, res) => {
   const { username, password } = req.body
   console.log('auth is called user,pass',username, password)
 

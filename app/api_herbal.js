@@ -16,6 +16,7 @@ const Op = Sequelize.Op
 // const request = require('request-promise')
 // const cheerio = require('cheerio')
 const herbalPrice = require('../data/herbalPrice')
+const JwtMiddleware = require('../config/Jwt-Middleware')
 
 // Upload Image
 uploadImage = async (files, doc) => {
@@ -41,7 +42,7 @@ uploadImage = async (files, doc) => {
 //  @route                  GET  /api/v2/herbal/list/:search
 //  @desc                   list all herbals search
 //  @access                 Private
-router.get('/list/:search', async (req, res) => {
+router.get('/list/:search', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get herbal search API called')
   let searchText = req.params.search
 
@@ -81,7 +82,7 @@ router.get('/list/:search', async (req, res) => {
 //  @route                  GET  /api/v2/herbal/show/:soil/:ph
 //  @desc                   show all herbals by soil and ph
 //  @access                 Private
-router.get('/show/:ph/:soil', async (req, res) => {
+router.get('/show/:ph/:soil', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get herbal show API called')
   let searchPh = req.params.ph
   let searchSoil = req.params.soil
@@ -140,7 +141,7 @@ router.get('/show/:ph/:soil', async (req, res) => {
 //  @route                  GET  /api/v2/herbal/list
 //  @desc                   list all herbals
 //  @access                 Private
-router.get('/list', async (req, res) => {
+router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get herbal API called')
   try {
     const herbalFound = await herbal.findAll({
@@ -207,7 +208,7 @@ router.get('/list', async (req, res) => {
 //  @route                  GET  /api/v2/herbal/:id
 //  @desc                   Get herbal by Id
 //  @access                 Private
-router.get('/select/:id', async (req, res) => {
+router.get('/select/:id', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get herbal by Id API called')
   let id = req.params.id
 
@@ -276,7 +277,7 @@ router.get('/select/:id', async (req, res) => {
 //  @route                  POST  /api/v2/herbal
 //  @desc                   Post add herbal
 //  @access                 Private
-router.post('/', async (req, res) => {
+router.post('/', JwtMiddleware.checkToken, async (req, res) => {
   console.log('herbal add is called')
   
   try {
@@ -305,7 +306,7 @@ router.post('/', async (req, res) => {
 //  @route                  GET  /api/v2/herbal/newid
 //  @desc                   Get new id
 //  @access                 Private
-router.get('/newid', async (req, res) => {
+router.get('/newid', JwtMiddleware.checkToken, async (req, res) => {
   console.log('herbal newid is called')
   
   try {
@@ -333,7 +334,7 @@ router.get('/newid', async (req, res) => {
 //  @route                  GET  /api/v2/herbal/updated
 //  @desc                   to update phStart and phEnd
 //  @access                 Private
-router.get('/updated', async (req, res) => {
+router.get('/updated', JwtMiddleware.checkToken, async (req, res) => {
   console.log('herbal updated is called')
 
   try {
@@ -359,46 +360,5 @@ router.get('/updated', async (req, res) => {
     })
   }
 })
-
-//  @route                  GET  /api/v2/herbal/price
-//  @desc                   get scraping price
-//  @access                 Private
-// router.get('/price', async (req, res) => {
-//   console.log('herbal price scraping is called')
-
-//   const URL = 'https://j-pad.net/%E0%B8%A3%E0%B8%B2%E0%B8%84%E0%B8%B2%E0%B8%AA%E0%B8%B4%E0%B8%99%E0%B8%84%E0%B9%89%E0%B8%B2%E0%B8%A7%E0%B8%B1%E0%B8%99%E0%B8%99%E0%B8%B5%E0%B9%89?cate=12';
-
-//   try {
-
-//     const response = await request(URL)
-//     let $ = cheerio.load(response)
-
-//     const data = [...$("table.table-bordered")].map(e =>
-//       Object.fromEntries([...$(e).find("tr")].map(e =>
-//         [...$(e).find("a,span")].map(e => $(e).text())
-//       ))
-//     );
-
-//     let converted = Object.entries(data[0]).map(([key,value]) => ({name: key, price: value }) );
-//     // console.log(converted);
-
-//     let herbalData = converted.slice(1) //to remove first object 
- 
-//      if (herbalData) {
-//        res.status(200).json({
-//          status: 'ok',
-//          result: herbalData,
-//        })
-//       } else {
-//       res.status(500).json({
-//         result: 'not found',
-//       })
-//     }
-//   } catch (error) {
-//     res.status(500).json({
-//       error,
-//     })
-//   }
-// })
 
 module.exports = router

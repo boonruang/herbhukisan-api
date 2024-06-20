@@ -1,13 +1,13 @@
 const express = require('express')
 const router = express.Router()
-// const JwtMiddleware = require('../config/Jwt-Middleware')
+const JwtMiddleware = require('../config/Jwt-Middleware')
 const sequelize = require('../config/db-instance')
 const { QueryTypes } = require('sequelize');
 
 //  @route                  GET  /api/v2/geosalt/all
 //  @desc                   list all geosalts
 //  @access                 Private
-router.get('/list/all',async (req, res) => {
+router.get('/list/all', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get geosalt list all API called')
   try {
     const geosaltFound = await sequelize.query(`
@@ -62,7 +62,7 @@ router.get('/list/all',async (req, res) => {
 //  @route                  GET  /api/v2/geosalt/list
 //  @desc                   list all geosalts by Id
 //  @access                 Private
-router.get('/list/:id',async (req, res) => {
+router.get('/list/:id', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get geosalt list API called')
   let ID = req.params.id  || 'ANY'
   console.log('ID',ID)  

@@ -4,11 +4,12 @@ const formidable = require('formidable')
 const router = express.Router()
 const reference = require('../models/reference')
 const herbal = require('../models/herbal')
+const JwtMiddleware = require('../config/Jwt-Middleware')
 
 //  @route                  GET  /api/v2/reference/list
 //  @desc                   list all references
 //  @access                 Private
-router.get('/list', async (req, res) => {
+router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get reference list API called')
   try {
     const referenceFound = await reference.findAll({
@@ -37,7 +38,7 @@ router.get('/list', async (req, res) => {
 //  @route                  GET  /api/v2/reference/list
 //  @desc                   list all references select by Id
 //  @access                 Private
-router.get('/select/:id',async (req, res) => {
+router.get('/select/:id', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get reference select by id API called')
   let id = req.params.id
   console.log('id',id)  
@@ -72,7 +73,7 @@ router.get('/select/:id',async (req, res) => {
 //  @route                  POST  /api/v2/reference
 //  @desc                   Post add reference
 //  @access                 Private
-router.post('/', async (req, res) => {
+router.post('/', JwtMiddleware.checkToken, async (req, res) => {
   console.log('reference add is called')
   try {
     const form = new formidable.IncomingForm();

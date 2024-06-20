@@ -10,12 +10,13 @@ const { QueryTypes } = require('sequelize');
 const Op = Sequelize.Op
 const request = require('request-promise')
 const cheerio = require('cheerio')
+const JwtMiddleware = require('../config/Jwt-Middleware')
 const moment = require('moment-timezone')
 
 //  @route                  GET  /api/v2/price/year
 //  @desc                   list all priceyears
 //  @access                 Private
-router.get('/year', async (req, res) => {
+router.get('/year', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get price year API called')
   try {
     const priceyearFound = await priceyear.findAll({
@@ -44,7 +45,7 @@ router.get('/year', async (req, res) => {
 //  @route                  GET  /api/v2/priceyear/list/:years/:product
 //  @desc                   list priceyears
 //  @access                 Private
-router.get('/year/:years/:product', async (req, res) => {
+router.get('/year/:years/:product', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get priceyears list API called')
   let priceyearStart = parseFloat(req.params.years.split('-')[0])  
   let priceyearEnd = parseFloat(req.params.years.split('-')[1])  
@@ -130,7 +131,7 @@ router.get('/year/:years/:product', async (req, res) => {
 //  @route                  GET  /api/v2/price/date
 //  @desc                   get scraping price
 //  @access                 Private
-router.get('/day', async (req, res) => {
+router.get('/day', JwtMiddleware.checkToken, async (req, res) => {
   console.log('herbal price day scraping is called')
 
   const URL = 'https://j-pad.net/%E0%B8%A3%E0%B8%B2%E0%B8%84%E0%B8%B2%E0%B8%AA%E0%B8%B4%E0%B8%99%E0%B8%84%E0%B9%89%E0%B8%B2%E0%B8%A7%E0%B8%B1%E0%B8%99%E0%B8%99%E0%B8%B5%E0%B9%89?cate=12';

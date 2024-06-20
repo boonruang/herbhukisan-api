@@ -1,13 +1,13 @@
 const express = require('express')
 const router = express.Router()
-// const JwtMiddleware = require('../config/Jwt-Middleware')
+const JwtMiddleware = require('../config/Jwt-Middleware')
 const sequelize = require('../config/db-instance')
 const { QueryTypes } = require('sequelize');
 
 //  @route                  GET  /api/v2/geosoil/list/all
 //  @desc                   list all geosalts
 //  @access                 Private
-router.get('/list/all',async (req, res) => {
+router.get('/list/all', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get geosoil list all API called')
   try {
     const geosoilFound = await sequelize.query(`
@@ -73,7 +73,7 @@ router.get('/list/all',async (req, res) => {
 //  @route                  GET  /api/v2/geosoil/list/:ampc
 //  @desc                   list all geosalts by Amp_code
 //  @access                 Private
-router.get('/list/:ampc',async (req, res) => {
+router.get('/list/:ampc', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get geosoil list API called')
   let AMP_CODE = req.params.ampc.toString()
   console.log('AMP_CODE',AMP_CODE)

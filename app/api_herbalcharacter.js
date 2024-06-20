@@ -5,11 +5,12 @@ const router = express.Router()
 const herbalcharacter = require('../models/herbalcharacter')
 const character = require('../models/character')
 const herbal = require('../models/herbal')
+const JwtMiddleware = require('../config/Jwt-Middleware')
 
 //  @route                  GET  /api/v2/herbalcharacter/list
 //  @desc                   list all herbalcharacter
 //  @access                 Private
-router.get('/list', async (req, res) => {
+router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get herbalcharacter list API called')
   try {
     const herbalcharacterFound = await herbalcharacter.findAll({
@@ -41,7 +42,7 @@ router.get('/list', async (req, res) => {
 //  @route                  GET  /api/v2/herbalcharacter/:id
 //  @desc                   Get herbalcharacter by Id
 //  @access                 Private
-router.get('/:id', async (req, res) => {
+router.get('/:id', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get herbalcharacter by Id API called')
   let id = req.params.id
 
@@ -71,7 +72,7 @@ router.get('/:id', async (req, res) => {
 //  @route                  POST  /api/v2/herbalcharacter
 //  @desc                   Post add herbalcharacter
 //  @access                 Private
-router.post('/', async (req, res) => {
+router.post('/', JwtMiddleware.checkToken, async (req, res) => {
   console.log('herbalcharacter add is called')
   try {
     const form = new formidable.IncomingForm();

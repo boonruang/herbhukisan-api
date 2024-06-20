@@ -10,8 +10,8 @@ const JwtMiddleware = require('../config/Jwt-Middleware')
 
 //  @route                  POST  /api/v2/role
 //  @desc                   Add role
-//  @access                 Public
-router.post('/', async (req, res) => {
+//  @access                 Private
+router.post('/', JwtMiddleware.checkToken, async (req, res) => {
   try {
     let result = await role.create(req.body)
     res.json({ result: constants.kResultOk, message: result })
@@ -23,7 +23,7 @@ router.post('/', async (req, res) => {
 //  @route                  GET  /api/v2/user/list
 //  @desc                   list all users
 //  @access                 Private
-router.get('/list', async (req, res) => {
+router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
   const roleFound = await role.findAll()
   if (roleFound) {
     res.status(200).json({
@@ -41,7 +41,7 @@ router.get('/list', async (req, res) => {
 //  @desc                   Get mock info
 //  @access                 Private
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', JwtMiddleware.checkToken, async (req, res) => {
   let id = req.params.id
 
   try {

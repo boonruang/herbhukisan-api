@@ -5,12 +5,13 @@ const farmer = require('../models/farmer')
 const constants = require('../config/constant')
 const Sequelize = require('sequelize')
 const sequelize = require('../config/db-instance')
+const JwtMiddleware = require('../config/Jwt-Middleware')
 const Op = Sequelize.Op
 
 //  @route                  GET  /api/v2/farmer/list
 //  @desc                   list all farmers
 //  @access                 Private
-router.get('/list', async (req, res) => {
+router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get farmer API called')
   try {
     const farmerFound = await farmer.findAll({
@@ -39,7 +40,7 @@ router.get('/list', async (req, res) => {
 //  @route                  GET  /api/v2/farmer/select/:id
 //  @desc                   Get farmer by Id
 //  @access                 Private
-router.get('/select/:id', async (req, res) => {
+router.get('/select/:id', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get farmer by Id API called')
   let id = req.params.id
 
@@ -69,7 +70,7 @@ router.get('/select/:id', async (req, res) => {
 //  @route                  POST  /api/v2/farmer
 //  @desc                   Post add farmer
 //  @access                 Private
-router.post('/', async (req, res) => {
+router.post('/', JwtMiddleware.checkToken, async (req, res) => {
   console.log('farmer add is called')
   
   try {

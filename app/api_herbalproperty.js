@@ -5,11 +5,12 @@ const router = express.Router()
 const herbalproperty = require('../models/herbalproperty')
 const property = require('../models/property')
 const herbal = require('../models/herbal')
+const JwtMiddleware = require('../config/Jwt-Middleware')
 
 //  @route                  GET  /api/v2/herbalproperty/list
 //  @desc                   list all herbalproperty
 //  @access                 Private
-router.get('/list', async (req, res) => {
+router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get herbalproperty list API called')
   try {
     const herbalpropertyFound = await herbalproperty.findAll({
@@ -41,7 +42,7 @@ router.get('/list', async (req, res) => {
 //  @route                  GET  /api/v2/herbalproperty/:id
 //  @desc                   Get herbalproperty by Id
 //  @access                 Private
-router.get('/:id', async (req, res) => {
+router.get('/:id', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get herbalproperty by Id API called')
   let id = req.params.id
 
@@ -71,7 +72,7 @@ router.get('/:id', async (req, res) => {
 //  @route                  POST  /api/v2/herbalproperty
 //  @desc                   Post add herbalproperty
 //  @access                 Private
-router.post('/', async (req, res) => {
+router.post('/', JwtMiddleware.checkToken, async (req, res) => {
   console.log('herbalproperty add is called')
   try {
     const form = new formidable.IncomingForm();

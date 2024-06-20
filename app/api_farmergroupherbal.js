@@ -5,11 +5,12 @@ const router = express.Router()
 const farmergroupherbal = require('../models/farmergroupherbal')
 const farmergroup = require('../models/farmergroup')
 const herbal = require('../models/herbal')
+const JwtMiddleware = require('../config/Jwt-Middleware')
 
 //  @route                  GET  /api/v2/farmergroupherbal/list
 //  @desc                   list all farmergroupherbals
 //  @access                 Private
-router.get('/list', async (req, res) => {
+router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get farmergroupherbal list API called')
   try {
     const farmergroupherbalFound = await farmergroupherbal.findAll({
@@ -41,7 +42,7 @@ router.get('/list', async (req, res) => {
 //  @route                  GET  /api/v2/farmergroupherbal/:id
 //  @desc                   Get farmergroupherbal by Id
 //  @access                 Private
-router.get('/:id', async (req, res) => {
+router.get('/:id', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get farmergroupherbal by Id API called')
   let id = req.params.id
 
@@ -71,7 +72,7 @@ router.get('/:id', async (req, res) => {
 //  @route                  POST  /api/v2/farmergroupherbal
 //  @desc                   Post add farmergroupherbal
 //  @access                 Private
-router.post('/', async (req, res) => {
+router.post('/', JwtMiddleware.checkToken, async (req, res) => {
   console.log('farmergroupherbal add is called')
   try {
     const form = new formidable.IncomingForm();

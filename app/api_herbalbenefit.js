@@ -5,11 +5,12 @@ const router = express.Router()
 const herbalbenefit = require('../models/herbalbenefit')
 const benefit = require('../models/benefit')
 const herbal = require('../models/herbal')
+const JwtMiddleware = require('../config/Jwt-Middleware')
 
 //  @route                  GET  /api/v2/herbalbenefit/list
 //  @desc                   list all herbalbenefit
 //  @access                 Private
-router.get('/list', async (req, res) => {
+router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get herbalbenefit list API called')
   try {
     const herbalbenefitFound = await herbalbenefit.findAll({
@@ -41,7 +42,7 @@ router.get('/list', async (req, res) => {
 //  @route                  GET  /api/v2/herbalbenefit/:id
 //  @desc                   Get herbalbenefit by Id
 //  @access                 Private
-router.get('/:id', async (req, res) => {
+router.get('/:id', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get herbalbenefit by Id API called')
   let id = req.params.id
 
@@ -71,7 +72,7 @@ router.get('/:id', async (req, res) => {
 //  @route                  POST  /api/v2/herbalbenefit
 //  @desc                   Post add herbalbenefit
 //  @access                 Private
-router.post('/', async (req, res) => {
+router.post('/', JwtMiddleware.checkToken, async (req, res) => {
   console.log('herbalbenefit add is called')
   try {
     const form = new formidable.IncomingForm();

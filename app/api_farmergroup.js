@@ -6,12 +6,13 @@ const herbal = require('../models/herbal')
 const sequelize = require('../config/db-instance')
 const { QueryTypes } = require('sequelize');
 const emptyPoint = require('../data/mockEmptyPoint.json')
+const JwtMiddleware = require('../config/Jwt-Middleware')
 
 
 //  @route                  GET  /api/v2/farmergroup/list
 //  @desc                   list all farmergroups
 //  @access                 Private
-router.get('/list', async (req, res) => {
+router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get farmergroup list API called')
   try {
     const farmergroupFound = await farmergroup.findAll({
@@ -47,7 +48,7 @@ router.get('/list', async (req, res) => {
 //  @route                  GET  /api/v2/farmergroup/list
 //  @desc                   list all farmergroup
 //  @access                 Private
-router.get('/list/:search', async (req, res) => {
+router.get('/list/:search', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get farmergroup list API called')
   let searchText = req.params.search
   if (searchText.length > 0 && searchText !== 'all' ) {
@@ -130,7 +131,7 @@ router.get('/list/:search', async (req, res) => {
 //  @route                  GET  /api/v2/farmergroup/list
 //  @desc                   list all farmergroups select by Id
 //  @access                 Private
-router.get('/select/:id',async (req, res) => {
+router.get('/select/:id', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get farmergroup select by id API called')
   let id = req.params.id
   console.log('id',id)  

@@ -4,11 +4,12 @@ const formidable = require('formidable')
 const router = express.Router()
 const role = require('../models/role')
 const userrole = require('../models/userrole')
+const JwtMiddleware = require('../config/Jwt-Middleware')
 
 //  @route                  GET  /api/v2/userrole/list
 //  @desc                   list all userrole
 //  @access                 Private
-router.get('/list', async (req, res) => {
+router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get userrole list API called')
   try {
     const userroleFound = await userrole.findAll({
@@ -40,7 +41,7 @@ router.get('/list', async (req, res) => {
 //  @route                  GET  /api/v2/userrole/:id
 //  @desc                   Get userrole by Id
 //  @access                 Private
-router.get('/:id', async (req, res) => {
+router.get('/:id', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get userrole by Id API called')
   let id = req.params.id
 
@@ -70,7 +71,7 @@ router.get('/:id', async (req, res) => {
 //  @route                  POST  /api/v2/userrole
 //  @desc                   Post add userrole
 //  @access                 Private
-router.post('/', async (req, res) => {
+router.post('/', JwtMiddleware.checkToken, async (req, res) => {
   console.log('userrole add is called')
   try {
     const form = new formidable.IncomingForm();
