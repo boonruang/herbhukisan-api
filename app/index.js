@@ -11,9 +11,8 @@ app.use(cors({credentials: true, origin: true}))
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
-const role = require('../models/role')
-const user = require('../models/user')
-
+// const role = require('../models/role')
+// const user = require('../models/user')
 // user.belongsTo(role)
 
 app.use('/api/v2/dashboard', require('./api_dashboard'))

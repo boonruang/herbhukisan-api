@@ -13,7 +13,7 @@ const formidable = require('formidable')
 //  @route                  GET  /api/v2/user/list
 //  @desc                   list all users
 //  @access                 Private
-router.get('/list', async (req, res) => {
+router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get user list API called')
   try {
     const userFound = await user.findAll({
@@ -49,8 +49,8 @@ router.get('/list', async (req, res) => {
 //  @route                  GET  /api/v2/user/info
 //  @desc                   Get user info
 //  @access                 Private
-
 router.get('/info', JwtMiddleware.checkToken, async (req, res) => {
+  console.log('get user info list API called')
   let all_user = await user.count()
   let active_user = await user.count({ where: { status: true } })
   let inactive_user = await user.count({ where: { status: false } })
@@ -111,8 +111,6 @@ router.post('/login', async (req, res) => {
           notBefore: JwtConfig.notBefore,
         },
       )
-
-
 
       res.status(200).json({
         result: constants.kResultOk,
