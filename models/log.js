@@ -20,7 +20,7 @@ const log = sequelize.define(
       allowNull: false,
     },
     path: {
-      type: Sequelize.STRING,
+      type: Sequelize.TEXT,
       allowNull: false,
     },
     return: {

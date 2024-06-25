@@ -32,6 +32,16 @@ const user = sequelize.define(
       allowNull: false,
       defaultValue: true,
     },
+    roleArr : {
+      type: Sequelize.VIRTUAL,
+      allowNull: true,
+      get () {
+        const roleData = this.getDataValue('roles')
+        return roleData?.map(item => {
+          return item.name
+        })
+      }
+    },     
   },
   {
     timestamps: false,

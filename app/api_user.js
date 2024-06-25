@@ -18,7 +18,7 @@ router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
   try {
     const userFound = await user.findAll({
       attributes: { exclude: ['password'] },
-      order: [['id', 'DESC']],
+      order: [['id', 'ASC']],
       include: [
         {
           model: role,
