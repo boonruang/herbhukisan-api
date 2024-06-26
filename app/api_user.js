@@ -134,6 +134,7 @@ router.post('/login', async (req, res) => {
 //  @access                 Private
 
 router.post('/', JwtMiddleware.checkToken, async (req, res) => {
+  console.log('user add is called')
   try {
     const form = new formidable.IncomingForm()
     form.parse(req, async (error, fields, files) => {
@@ -143,6 +144,7 @@ router.post('/', JwtMiddleware.checkToken, async (req, res) => {
       let username = fields.username
       let password = bcrypt.hashSync(fields.password, 8)
       let status = fields.status
+      let roleId = fields.role
       let userFound = await user.findOne({
         where: { username: fields.username },
       })
@@ -162,17 +164,34 @@ router.post('/', JwtMiddleware.checkToken, async (req, res) => {
           status,
         })
 
+        
+
+        // create userrole
         if (result) {
-          res.json({
-            result: constants.kResultOk,
-            message: 'User created',
+          let userroleSuccess = await userrole.create({
+            userId: result.id,
+            roleId: roleId
           })
+
+            if (userroleSuccess) {
+              res.json({
+                result: constants.kResultOk,
+                message: 'User created',
+              })
+            } else {
+              res.json({
+                result: 'can not add user role',
+                Error: error,
+              })
+            }        
         } else {
           res.json({
-            result: constants.kResultNok,
+            result: 'can not add user',
             Error: error,
           })
         }
+
+
       }
     })
   } catch (error) {
