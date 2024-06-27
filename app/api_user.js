@@ -164,8 +164,6 @@ router.post('/', JwtMiddleware.checkToken, async (req, res) => {
           status,
         })
 
-        
-
         // create userrole
         if (result) {
           let userroleSuccess = await userrole.create({
