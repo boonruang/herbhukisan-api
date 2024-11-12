@@ -11,10 +11,6 @@ app.use(cors({credentials: true, origin: true}))
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
-// const role = require('../models/role')
-// const user = require('../models/user')
-// user.belongsTo(role)
-
 app.use('/api/v2/dashboard', require('./api_dashboard'))
 app.use('/api/v2/price', require('./api_price'))
 app.use('/api/v2/geoland', require('./api_geoland'))
