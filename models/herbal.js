@@ -29,7 +29,7 @@ const herbal = sequelize.define(
     },        
     image : {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: true,
     },        
     ph : {
       type: Sequelize.STRING,
@@ -50,7 +50,23 @@ const herbal = sequelize.define(
     phend : {
       type: Sequelize.FLOAT,
       allowNull: true,
-    },        
+    },      
+    charactername: {
+      type: Sequelize.TEXT,
+      allowNull: true,
+    },       
+    propertyname: {
+      type: Sequelize.TEXT,
+      allowNull: true,
+    },       
+    benefit: {
+      type: Sequelize.TEXT,
+      allowNull: true,
+    },       
+    referencename: {
+      type: Sequelize.TEXT,
+      allowNull: true,
+    },       
   },
   {
     timestamps: false,

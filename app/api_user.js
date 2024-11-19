@@ -262,6 +262,14 @@ router.get('/:id', JwtMiddleware.checkToken, async (req, res) => {
     const userFound = await user.findOne({
       // attributes: { exclude: ['password'] },
       where: { id },
+      include: [
+        {
+          model: role,
+          through: {
+            attributes: []
+          }
+        },
+      ],      
     })
 
     if (userFound) {
@@ -269,12 +277,12 @@ router.get('/:id', JwtMiddleware.checkToken, async (req, res) => {
       res.status(200).json({
         id: userFound.id,
         username: userFound.username,
-        password: '',
-        password2: '',
+        // password: '',
+        // password2: '',
         firstname: userFound.firstname,
         lastname: userFound.lastname,
         status: userFound.status,
-        // roleId: userFound.roleId,
+        roles: userFound.roles,
       })
     } else {
       res.status(500).json({

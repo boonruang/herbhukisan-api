@@ -361,4 +361,49 @@ router.get('/updated', JwtMiddleware.checkToken, async (req, res) => {
   }
 })
 
+
+//  @route                  DELETE  /api/v2/herbal/:id
+//  @desc                   Delete by id
+//  @access                 Private
+router.delete('/:id', JwtMiddleware.checkToken, async (req, res) => {
+  try {
+    const herbalFound = await herbal.findOne({ where: { id: req.params.id } })
+    if (herbalFound) {
+      // herbal found
+      const herbalDeleted = await herbal.destroy({
+        where: {
+          id: req.params.id,
+        },
+      })
+
+      if (herbalDeleted) {
+        // herbal deleted
+        console.log(`herbal id: ${req.params.id} deleted`)
+        res.status(200).json({
+          result: constants.kResultOk,
+          message: `herbal id: ${req.params.id} deleted`,
+        })
+      } else {
+        // herbal delete failed
+        console.log(`herbal id: ${req.params.id} delete failed`)
+        res.status(500).json({
+          result: constants.kResultNok,
+          message: `herbal id: ${req.params.id} delete failed`,
+        })
+      }
+    } else {
+      // herbal not found
+      res.status(500).json({
+        result: constants.kResultNok,
+        message: 'herbal not found',
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      result: constants.kResultNok,
+      Error: error.toString(),
+    })
+  }
+})
+
 module.exports = router
