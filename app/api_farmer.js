@@ -66,6 +66,38 @@ router.get('/select/:id', JwtMiddleware.checkToken, async (req, res) => {
   }
 })
 
+//  @route                  GET  /api/v2/farmer/status
+//  @desc                   Get farmer 
+//  @access                 Private
+router.get('/status', JwtMiddleware.checkToken, async (req, res) => {
+  console.log('get farmer status API called')
+
+  try {
+    const farmerFound = await farmer.findAll({
+      where: {
+        status: {
+          [Op.ne]: null
+        }        
+       },
+    })
+
+    if (farmerFound) {
+      res.status(200).json({
+        status: 'ok',
+        result: farmerFound,
+      })
+    } else {
+      res.status(500).json({
+        result: 'not found',
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      error,
+    })
+  }
+})
+
 
 //  @route                  POST  /api/v2/farmer
 //  @desc                   Post add farmer
