@@ -17,7 +17,7 @@ const farmer = sequelize.define(
     },
     password: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     firstname: {
       type: Sequelize.STRING,
