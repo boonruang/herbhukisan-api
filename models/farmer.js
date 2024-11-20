@@ -69,7 +69,7 @@ const farmer = sequelize.define(
     },
     status: {
       type: Sequelize.BOOLEAN,
-      allowNull: false,
+      allowNull: true,
       defaultValue: false,
     },    
   },
