@@ -67,6 +67,11 @@ const farmer = sequelize.define(
       type: Sequelize.STRING,
       allowNull: true,
     },
+    status: {
+      type: Sequelize.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },    
   },
   {
     timestamps: false,
