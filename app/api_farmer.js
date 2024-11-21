@@ -76,7 +76,7 @@ router.get('/status', JwtMiddleware.checkToken, async (req, res) => {
     const farmerFound = await farmer.findAll({
       where: {
         status: {
-          [Op.ne]: null
+          [Op.eq]: false
         }        
        },
     })
