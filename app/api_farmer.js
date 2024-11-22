@@ -127,4 +127,32 @@ router.post('/', JwtMiddleware.checkToken, async (req, res) => {
   }
 });
 
+//  @route                  POST  /api/v2/farmer
+//  @desc                   Post add farmer
+//  @access                 Private
+router.post('/add', async (req, res) => {
+  console.log('farmer add is called')
+  
+  try {
+    const form = new formidable.IncomingForm();
+    console.log('form.parse(req)',form.parse(req))
+
+    form.parse(req, async (error, fields, files) => {
+      let result = await farmer.create(fields);
+      // result = await uploadImage(files, result);
+      console.log('req fields',fields)
+
+      res.json({
+        result: constants.kResultOk,
+        message: JSON.stringify(result)
+      });
+    });
+  } catch (error) {
+    res.json({
+      result: constants.kResultNok,
+      message: JSON.stringify(error)
+    });
+  }
+});
+
 module.exports = router
