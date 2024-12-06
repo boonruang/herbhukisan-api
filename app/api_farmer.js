@@ -2,9 +2,9 @@ const express = require('express')
 const router = express.Router()
 const formidable = require('formidable')
 const farmer = require('../models/farmer')
+const farmerlog = require('../models/farmerlog')
 const constants = require('../config/constant')
 const Sequelize = require('sequelize')
-const sequelize = require('../config/db-instance')
 const JwtMiddleware = require('../config/Jwt-Middleware')
 const Op = Sequelize.Op
 
@@ -15,6 +15,11 @@ router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
   console.log('get farmer API called')
   try {
     const farmerFound = await farmer.findAll({
+      where: {
+        status: { 
+           [Op.eq] :  true
+          } 
+      },
       order: [
         ['id','ASC']
       ],
@@ -46,7 +51,7 @@ router.get('/select/:id', JwtMiddleware.checkToken, async (req, res) => {
 
   try {
     const farmerFound = await farmer.findOne({
-      where: { id },
+      where: { id }    
     })
 
     if (farmerFound) {
@@ -154,5 +159,37 @@ router.post('/add', async (req, res) => {
     });
   }
 });
+
+//  @route                  GET  /api/v2/farmer/approve/:id
+//  @desc                   Get farmer by Id
+//  @access                 Private
+router.get('/approve/:id', JwtMiddleware.checkToken, async (req, res) => {
+  console.log('get farmer by Id API called')
+  let id = req.params.id
+
+  try {
+    const farmerFound = await farmer.findOne({
+      where: { id }    
+    })
+
+    if (farmerFound) {
+
+      farmerFound.update({ status: true})      
+
+      res.status(200).json({
+        status: 'ok',
+        result: farmerFound,
+      })
+    } else {
+      res.status(500).json({
+        result: 'not found',
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      error,
+    })
+  }
+})
 
 module.exports = router
