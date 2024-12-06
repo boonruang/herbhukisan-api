@@ -71,7 +71,17 @@ const farmer = sequelize.define(
       type: Sequelize.BOOLEAN,
       allowNull: true,
       defaultValue: false,
-    },    
+    },   
+    reset: {
+      type: Sequelize.BOOLEAN,
+      allowNull: true,
+      defaultValue: false,
+    },       
+    reject: {
+      type: Sequelize.BOOLEAN,
+      allowNull: true,
+      defaultValue: false,
+    },     
   },
   {
     timestamps: false,

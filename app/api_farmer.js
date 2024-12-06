@@ -80,9 +80,20 @@ router.get('/status', JwtMiddleware.checkToken, async (req, res) => {
   try {
     const farmerFound = await farmer.findAll({
       where: {
-        status: {
-          [Op.eq]: false
-        }        
+        [Op.and]: [
+          {
+              status: 
+              {
+                  [Op.eq] : false
+              }
+          }, 
+          {
+              reject: 
+              {
+                [Op.eq] : false
+              }
+          }       
+        ]
        },
     })
 
@@ -103,6 +114,81 @@ router.get('/status', JwtMiddleware.checkToken, async (req, res) => {
   }
 })
 
+//  @route                  GET  /api/v2/farmer/reset
+//  @desc                   Get farmer 
+//  @access                 Private
+router.get('/reset', JwtMiddleware.checkToken, async (req, res) => {
+  console.log('get farmer reset API called')
+
+  try {
+    const farmerFound = await farmer.findAll({
+      where: {
+        [Op.and]: [
+          {
+              reset: 
+              {
+                  [Op.eq] : true
+              }
+          }, 
+          {
+              reject: 
+              {
+                [Op.eq] : false
+              }
+          }       
+        ]
+       },
+    })
+
+    if (farmerFound) {
+      res.status(200).json({
+        status: 'ok',
+        result: farmerFound,
+      })
+    } else {
+      res.status(500).json({
+        result: 'not found',
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      error,
+    })
+  }
+})
+
+//  @route                  GET  /api/v2/farmer/reject
+//  @desc                   Get farmer 
+//  @access                 Private
+router.get('/reject', JwtMiddleware.checkToken, async (req, res) => {
+  console.log('get farmer reject API called')
+
+  try {
+    const farmerFound = await farmer.findAll({
+      where: {
+          reject: 
+          {
+              [Op.eq] : true
+          }
+       },
+    })
+
+    if (farmerFound) {
+      res.status(200).json({
+        status: 'ok',
+        result: farmerFound,
+      })
+    } else {
+      res.status(500).json({
+        result: 'not found',
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      error,
+    })
+  }
+})
 
 //  @route                  POST  /api/v2/farmer
 //  @desc                   Post add farmer
@@ -175,6 +261,38 @@ router.get('/approve/:id', JwtMiddleware.checkToken, async (req, res) => {
     if (farmerFound) {
 
       farmerFound.update({ status: true})      
+
+      res.status(200).json({
+        status: 'ok',
+        result: farmerFound,
+      })
+    } else {
+      res.status(500).json({
+        result: 'not found',
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      error,
+    })
+  }
+})
+
+//  @route                  GET  /api/v2/farmer/notapprove/:id
+//  @desc                   Get farmer by Id
+//  @access                 Private
+router.get('/notapprove/:id', JwtMiddleware.checkToken, async (req, res) => {
+  console.log('get farmer by Id API called')
+  let id = req.params.id
+
+  try {
+    const farmerFound = await farmer.findOne({
+      where: { id }    
+    })
+
+    if (farmerFound) {
+
+      farmerFound.update({ reject: true})      
 
       res.status(200).json({
         status: 'ok',
