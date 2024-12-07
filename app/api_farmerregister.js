@@ -271,7 +271,7 @@ router.get('/approve/:id', JwtMiddleware.checkToken, async (req, res) => {
         }
       } else {
         res.status(200).json({
-          status: 'farmerregisterFound.status not true',
+          status: 'farmerregisterFound.status not true or farmerregisterFound.id exist',
         })        
       }
 
