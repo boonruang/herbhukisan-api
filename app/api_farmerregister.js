@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
 const formidable = require('formidable')
-const farmer = require('../models/farmer')
 const farmerlog = require('../models/farmerlog')
 const farmerregister = require('../models/farmerregister')
 const constants = require('../config/constant')
@@ -9,13 +8,13 @@ const Sequelize = require('sequelize')
 const JwtMiddleware = require('../config/Jwt-Middleware')
 const Op = Sequelize.Op
 
-//  @route                  GET  /api/v2/farmer/list
-//  @desc                   list all farmers
+//  @route                  GET  /api/v2/farmerregister/list
+//  @desc                   list all farmerregisters
 //  @access                 Private
 router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
-  console.log('get farmer API called')
+  console.log('get farmerregister API called')
   try {
-    const farmerFound = await farmer.findAll({
+    const farmerregisterFound = await farmerregister.findAll({
       where: {
         status: { 
            [Op.eq] :  true
@@ -25,11 +24,11 @@ router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
         ['id','ASC']
       ],
     })
-    if (farmerFound) {
-      console.log('farmerFound in list API: ', farmerFound)
+    if (farmerregisterFound) {
+      console.log('farmerregisterFound in list API: ', farmerregisterFound)
       res.status(200).json({
         status: 'ok',
-        result: farmerFound,
+        result: farmerregisterFound,
       })
     } else {
       res.status(500).json({
@@ -43,22 +42,22 @@ router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
   }
 })
 
-//  @route                  GET  /api/v2/farmer/select/:id
-//  @desc                   Get farmer by Id
+//  @route                  GET  /api/v2/farmerregister/select/:id
+//  @desc                   Get farmerregister by Id
 //  @access                 Private
 router.get('/select/:id', JwtMiddleware.checkToken, async (req, res) => {
-  console.log('get farmer by Id API called')
+  console.log('get farmerregister by Id API called')
   let id = req.params.id
 
   try {
-    const farmerFound = await farmer.findOne({
+    const farmerregisterFound = await farmerregister.findOne({
       where: { id }    
     })
 
-    if (farmerFound) {
+    if (farmerregisterFound) {
       res.status(200).json({
         status: 'ok',
-        result: farmerFound,
+        result: farmerregisterFound,
       })
     } else {
       res.status(500).json({
@@ -72,14 +71,14 @@ router.get('/select/:id', JwtMiddleware.checkToken, async (req, res) => {
   }
 })
 
-//  @route                  GET  /api/v2/farmer/status
-//  @desc                   Get farmer 
+//  @route                  GET  /api/v2/farmerregister/status
+//  @desc                   Get farmerregister 
 //  @access                 Private
 router.get('/status', JwtMiddleware.checkToken, async (req, res) => {
-  console.log('get farmer status API called')
+  console.log('get farmerregister status API called')
 
   try {
-    const farmerFound = await farmer.findAll({
+    const farmerregisterFound = await farmerregister.findAll({
       where: {
         [Op.and]: [
           {
@@ -101,10 +100,10 @@ router.get('/status', JwtMiddleware.checkToken, async (req, res) => {
         ],         
     })
 
-    if (farmerFound) {
+    if (farmerregisterFound) {
       res.status(200).json({
         status: 'ok',
-        result: farmerFound,
+        result: farmerregisterFound,
       })
     } else {
       res.status(500).json({
@@ -118,14 +117,14 @@ router.get('/status', JwtMiddleware.checkToken, async (req, res) => {
   }
 })
 
-//  @route                  GET  /api/v2/farmer/reset
-//  @desc                   Get farmer 
+//  @route                  GET  /api/v2/farmerregister/reset
+//  @desc                   Get farmerregister 
 //  @access                 Private
 router.get('/reset', JwtMiddleware.checkToken, async (req, res) => {
-  console.log('get farmer reset API called')
+  console.log('get farmerregister reset API called')
 
   try {
-    const farmerFound = await farmer.findAll({
+    const farmerregisterFound = await farmerregister.findAll({
       where: {
         [Op.and]: [
           {
@@ -147,10 +146,10 @@ router.get('/reset', JwtMiddleware.checkToken, async (req, res) => {
         ],             
     })
 
-    if (farmerFound) {
+    if (farmerregisterFound) {
       res.status(200).json({
         status: 'ok',
-        result: farmerFound,
+        result: farmerregisterFound,
       })
     } else {
       res.status(500).json({
@@ -164,14 +163,14 @@ router.get('/reset', JwtMiddleware.checkToken, async (req, res) => {
   }
 })
 
-//  @route                  GET  /api/v2/farmer/reject
-//  @desc                   Get farmer 
+//  @route                  GET  /api/v2/farmerregister/reject
+//  @desc                   Get farmerregister 
 //  @access                 Private
 router.get('/reject', JwtMiddleware.checkToken, async (req, res) => {
-  console.log('get farmer reject API called')
+  console.log('get farmerregister reject API called')
 
   try {
-    const farmerFound = await farmer.findAll({
+    const farmerregisterFound = await farmerregister.findAll({
       where: {
           reject: 
           {
@@ -183,10 +182,10 @@ router.get('/reject', JwtMiddleware.checkToken, async (req, res) => {
         ],       
     })
 
-    if (farmerFound) {
+    if (farmerregisterFound) {
       res.status(200).json({
         status: 'ok',
-        result: farmerFound,
+        result: farmerregisterFound,
       })
     } else {
       res.status(500).json({
@@ -201,11 +200,11 @@ router.get('/reject', JwtMiddleware.checkToken, async (req, res) => {
 })
 
 
-//  @route                  POST  /api/v2/farmer/add
-//  @desc                   Post add farmer
+//  @route                  POST  /api/v2/farmerregister
+//  @desc                   Post add farmerregister
 //  @access                 public
-router.post('/add', async (req, res) => {
-  console.log('farmerregister add is called')
+router.post('/', async (req, res) => {
+  console.log('farmerregisterregister add is called')
   
   try {
     const form = new formidable.IncomingForm();
@@ -229,25 +228,25 @@ router.post('/add', async (req, res) => {
   }
 });
 
-//  @route                  GET  /api/v2/farmer/approve/:id
-//  @desc                   Get farmer by Id
+//  @route                  GET  /api/v2/farmerregister/approve/:id
+//  @desc                   Get farmerregister by Id
 //  @access                 Private
 router.get('/approve/:id', JwtMiddleware.checkToken, async (req, res) => {
-  console.log('get farmer by Id API called')
+  console.log('get farmerregister by Id API called')
   let id = req.params.id
 
   try {
-    const farmerFound = await farmer.findOne({
+    const farmerregisterFound = await farmerregister.findOne({
       where: { id }    
     })
 
-    if (farmerFound) {
+    if (farmerregisterFound) {
 
-      farmerFound.update({ status: true})      
+      farmerregisterFound.update({ status: true})      
 
       res.status(200).json({
         status: 'ok',
-        result: farmerFound,
+        result: farmerregisterFound,
       })
     } else {
       res.status(500).json({
@@ -261,25 +260,25 @@ router.get('/approve/:id', JwtMiddleware.checkToken, async (req, res) => {
   }
 })
 
-//  @route                  GET  /api/v2/farmer/notapprove/:id
-//  @desc                   Get farmer by Id
+//  @route                  GET  /api/v2/farmerregister/notapprove/:id
+//  @desc                   Get farmerregister by Id
 //  @access                 Private
 router.get('/notapprove/:id', JwtMiddleware.checkToken, async (req, res) => {
-  console.log('get farmer by Id API called')
+  console.log('get farmerregister by Id API called')
   let id = req.params.id
 
   try {
-    const farmerFound = await farmer.findOne({
+    const farmerregisterFound = await farmerregister.findOne({
       where: { id }    
     })
 
-    if (farmerFound) {
+    if (farmerregisterFound) {
 
-      farmerFound.update({ reject: true})      
+      farmerregisterFound.update({ reject: true})      
 
       res.status(200).json({
         status: 'ok',
-        result: farmerFound,
+        result: farmerregisterFound,
       })
     } else {
       res.status(500).json({
