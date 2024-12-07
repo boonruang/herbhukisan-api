@@ -270,7 +270,7 @@ router.get('/approve/:id', JwtMiddleware.checkToken, async (req, res) => {
 
     if (farmerFound) {
 
-      farmerFound.update({ status: true})      
+      farmer.update({ status: true})      
 
       res.status(200).json({
         status: 'ok',

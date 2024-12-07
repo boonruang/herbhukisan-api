@@ -1,12 +1,41 @@
 const express = require('express')
 const router = express.Router()
 const formidable = require('formidable')
+const farmer = require('../models/farmer')
 const farmerlog = require('../models/farmerlog')
 const farmerregister = require('../models/farmerregister')
 const constants = require('../config/constant')
 const Sequelize = require('sequelize')
 const JwtMiddleware = require('../config/Jwt-Middleware')
 const Op = Sequelize.Op
+
+//  @route                  POST  /api/v2/farmerregister
+//  @desc                   Post add farmerregister
+//  @access                 public
+router.post('/', async (req, res) => {
+  console.log('farmerregisterregister add is called')
+  
+  try {
+    const form = new formidable.IncomingForm();
+    console.log('form.parse(req)',form.parse(req))
+
+    form.parse(req, async (error, fields, files) => {
+      let result = await farmerregister.create(fields);
+      // result = await uploadImage(files, result);
+      console.log('req fields',fields)
+
+      res.json({
+        result: constants.kResultOk,
+        message: JSON.stringify(result)
+      });
+    });
+  } catch (error) {
+    res.json({
+      result: constants.kResultNok,
+      message: JSON.stringify(error)
+    });
+  }
+});
 
 //  @route                  GET  /api/v2/farmerregister/list
 //  @desc                   list all farmerregisters
@@ -200,34 +229,6 @@ router.get('/reject', JwtMiddleware.checkToken, async (req, res) => {
 })
 
 
-//  @route                  POST  /api/v2/farmerregister
-//  @desc                   Post add farmerregister
-//  @access                 public
-router.post('/', async (req, res) => {
-  console.log('farmerregisterregister add is called')
-  
-  try {
-    const form = new formidable.IncomingForm();
-    console.log('form.parse(req)',form.parse(req))
-
-    form.parse(req, async (error, fields, files) => {
-      let result = await farmerregister.create(fields);
-      // result = await uploadImage(files, result);
-      console.log('req fields',fields)
-
-      res.json({
-        result: constants.kResultOk,
-        message: JSON.stringify(result)
-      });
-    });
-  } catch (error) {
-    res.json({
-      result: constants.kResultNok,
-      message: JSON.stringify(error)
-    });
-  }
-});
-
 //  @route                  GET  /api/v2/farmerregister/approve/:id
 //  @desc                   Get farmerregister by Id
 //  @access                 Private
@@ -236,18 +237,49 @@ router.get('/approve/:id', JwtMiddleware.checkToken, async (req, res) => {
   let id = req.params.id
 
   try {
-    const farmerregisterFound = await farmerregister.findOne({
+    let farmerregisterFound = await farmerregister.findOne({
       where: { id }    
     })
 
+    farmerregisterFound.update({ status: true})   
+
+
     if (farmerregisterFound) {
 
-      farmerregisterFound.update({ status: true})      
+      // farmerregisterFound.status = true 
+      // delete farmerregisterFound.dataValues.id
+      // remove id from object 
+      const {  id, ...rest } =  farmerregisterFound.dataValues
+      // console.log('farmerregisterFound',farmerregisterFound)
+      console.log('rest',rest)
 
-      res.status(200).json({
-        status: 'ok',
-        result: farmerregisterFound,
-      })
+      if (farmerregisterFound.status) {
+        // console.log('farmerregisterFound',farmerregisterFound)
+        // console.log('farmerregisterFound',farmerregisterFound.dataValues)
+
+        let result = await farmer.create(rest);
+
+        if (result) {
+          res.status(200).json({
+            status: 'ok',
+            result: result,
+          })
+        } else {
+          res.status(200).json({
+            status: 'result not ok',
+          })        
+        }
+      } else {
+        res.status(200).json({
+          status: 'farmerregisterFound.status not true',
+        })        
+      }
+
+        // res.status(200).json({
+        //   status: 'ok',
+        //   result: farmerregisterFound,
+        // })
+
     } else {
       res.status(500).json({
         result: 'not found',
