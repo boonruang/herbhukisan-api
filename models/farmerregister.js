@@ -51,6 +51,10 @@ const farmerregister = sequelize.define(
       type: Sequelize.STRING,
       allowNull: false,
     },
+    postcode: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },    
     tel: {
       type: Sequelize.STRING,
       allowNull: true,
