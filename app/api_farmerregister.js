@@ -253,33 +253,33 @@ router.get('/approve/:id', JwtMiddleware.checkToken, async (req, res) => {
       // console.log('farmerregisterFound',farmerregisterFound)
       console.log('rest',rest)
 
-      res.status(200).json({
-        status: 'ok',
-        rest: rest,
-      })
+      // res.status(200).json({
+      //   status: 'ok',
+      //   rest: rest,
+      // })
 
 
-      // if (farmerregisterFound.status) {
-      //   // console.log('farmerregisterFound',farmerregisterFound)
-      //   // console.log('farmerregisterFound',farmerregisterFound.dataValues)
+      if (farmerregisterFound.status && rest) {
+        // console.log('farmerregisterFound',farmerregisterFound)
+        // console.log('farmerregisterFound',farmerregisterFound.dataValues)
 
-      //   let result = await farmer.create(rest);
+        let result = await farmer.create(rest);
 
-      //   if (result) {
-      //     res.status(200).json({
-      //       status: 'ok',
-      //       result: result,
-      //     })
-      //   } else {
-      //     res.status(200).json({
-      //       status: 'result not ok',
-      //     })        
-      //   }
-      // } else {
-      //   res.status(200).json({
-      //     status: 'farmerregisterFound.status not true or farmerregisterFound.id exist',
-      //   })        
-      // }
+        if (result) {
+          res.status(200).json({
+            status: 'ok',
+            result: result,
+          })
+        } else {
+          res.status(200).json({
+            status: 'result not ok',
+          })        
+        }
+      } else {
+        res.status(200).json({
+          status: 'farmerregisterFound.status not true or farmerregisterFound.id exist',
+        })        
+      }
 
         // res.status(200).json({
         //   status: 'ok',
