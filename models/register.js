@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize')
 const sequelize = require('../config/db-instance')
 
-const farmerregister = sequelize.define(
-  'farmerregisters',
+const register = sequelize.define(
+  'registers',
   {
     // attributes
     id: {
@@ -85,16 +85,21 @@ const farmerregister = sequelize.define(
       type: Sequelize.BOOLEAN,
       allowNull: true,
       defaultValue: false,
-    },     
+    },   
+    register_type: {
+      type: Sequelize.INTEGER,
+      defaultValue: 1,
+      allowNull: false,
+    },      
   },
   {
     timestamps: false,
-    tableName: "farmerregisters",
+    tableName: "registers",
   },
 )
 
 ;(async () => {
-  await farmerregister.sync({ force: false })
+  await register.sync({ force: false })
 })()
 
-module.exports = farmerregister
+module.exports = register
