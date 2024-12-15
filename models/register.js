@@ -91,6 +91,16 @@ const register = sequelize.define(
       defaultValue: 1,
       allowNull: false,
     },      
+    farmer_type: {
+      type: Sequelize.INTEGER,
+      defaultValue: 1,
+      allowNull: false,
+    },     
+    related_with: {
+      type: Sequelize.INTEGER,
+      defaultValue: 1,
+      allowNull: false,
+    },    
   },
   {
     timestamps: false,

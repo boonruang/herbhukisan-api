@@ -8,7 +8,6 @@ const { QueryTypes } = require('sequelize');
 const emptyPoint = require('../data/mockEmptyPoint.json')
 const JwtMiddleware = require('../config/Jwt-Middleware')
 
-
 //  @route                  GET  /api/v2/farmergroup/list
 //  @desc                   list all farmergroups
 //  @access                 Private
@@ -26,6 +25,35 @@ router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
           attributes: []
         }        
        },      
+    })
+    if (farmergroupFound) {
+      console.log('farmergroupFound in list API: ', farmergroupFound)
+      res.status(200).json({
+        status: 'ok',
+        result: farmergroupFound,
+      })
+    } else {
+      res.status(500).json({
+        status: 'nok',
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      Error: error.toString(),
+    })
+  }
+})
+
+//  @route                  GET  /api/v2/farmergroup/list/noauth
+//  @desc                   list all farmergroup
+//  @access                 public
+router.get('/list/noauth', async (req, res) => {
+  console.log('get farmergroup no auth list API called')
+  try {
+    const farmergroupFound = await farmergroup.findAll({
+      order: [
+        ['id', 'ASC'],
+    ],     
     })
     if (farmergroupFound) {
       console.log('farmergroupFound in list API: ', farmergroupFound)
