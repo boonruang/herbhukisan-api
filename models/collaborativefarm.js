@@ -58,7 +58,15 @@ const collaborativefarm = sequelize.define(
     area: {
       type: Sequelize.STRING,
       allowNull: true,
-    },           
+    },  
+    herbal: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },       
+    output: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },             
     tel: {
       type: Sequelize.STRING,
       allowNull: true,
