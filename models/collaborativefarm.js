@@ -15,7 +15,7 @@ const collaborativefarm = sequelize.define(
       type: Sequelize.STRING,
       allowNull: false,
     },
-    headname: {
+    leader: {
       type: Sequelize.STRING,
       allowNull: true,
     },

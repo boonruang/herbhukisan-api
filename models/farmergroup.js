@@ -15,7 +15,7 @@ const farmergroup = sequelize.define(
       type: Sequelize.STRING,
       allowNull: false,
     },
-    no: {
+    hno: {
       type: Sequelize.STRING,
       allowNull: false,
     },
