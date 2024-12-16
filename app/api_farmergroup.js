@@ -24,7 +24,10 @@ router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
         through: {
           attributes: []
         }        
-       },      
+       }, 
+       order: [
+        ['id', 'ASC'],
+        ],       
     })
     if (farmergroupFound) {
       console.log('farmergroupFound in list API: ', farmergroupFound)
