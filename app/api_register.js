@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const formidable = require('formidable')
+const user = require('../models/user')
 const farmer = require('../models/farmer')
 const farmerlog = require('../models/farmerlog')
 const register = require('../models/register')
@@ -251,6 +252,7 @@ router.get('/approve/:id', JwtMiddleware.checkToken, async (req, res) => {
       // remove id from object 
       const {  id, reset, reject, ...rest } =  registerFound.dataValues
       // console.log('registerFound',registerFound)
+      // rest.push({role: 1})
       console.log('rest',rest)
 
       // res.status(200).json({
@@ -259,7 +261,8 @@ router.get('/approve/:id', JwtMiddleware.checkToken, async (req, res) => {
       // })
 
 
-      if (registerFound.status && rest) {
+      if (registerFound.status && (rest.register_type == 1 || rest.register_type == 2)) {
+        console.log('register_type 1 ',rest.register_type)
         // console.log('registerFound',registerFound)
         // console.log('registerFound',registerFound.dataValues)
 
@@ -275,7 +278,24 @@ router.get('/approve/:id', JwtMiddleware.checkToken, async (req, res) => {
             status: 'result not ok',
           })        
         }
-      } else {
+      } else  if (registerFound.status && (rest.register_type == 3 || rest.register_type == 4)) {
+        console.log('register_type 2 ',rest.register_type)
+        // console.log('registerFound',registerFound)
+        // console.log('registerFound',registerFound.dataValues)
+
+        let result = await farmer.create(rest);
+
+        if (result) {
+          res.status(200).json({
+            status: 'ok',
+            result: result,
+          })
+        } else {
+          res.status(200).json({
+            status: 'result not ok',
+          })        
+        }
+      } else { 
         res.status(200).json({
           status: 'registerFound.status not true or registerFound.id exist',
         })        
