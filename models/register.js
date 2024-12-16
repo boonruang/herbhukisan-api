@@ -97,9 +97,8 @@ const register = sequelize.define(
       allowNull: false,
     },     
     related_with: {
-      type: Sequelize.INTEGER,
-      defaultValue: 1,
-      allowNull: false,
+      type: Sequelize.STRING,
+      allowNull: true,
     },    
   },
   {
