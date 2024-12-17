@@ -53,7 +53,7 @@ const farmer = sequelize.define(
     },
     postcode: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: true,
     },    
     tel: {
       type: Sequelize.STRING,

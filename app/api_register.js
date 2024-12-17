@@ -2,12 +2,14 @@ const express = require('express')
 const router = express.Router()
 const formidable = require('formidable')
 const user = require('../models/user')
+const role = require('../models/role')
 const farmer = require('../models/farmer')
 const farmerlog = require('../models/farmerlog')
 const register = require('../models/register')
 const constants = require('../config/constant')
 const Sequelize = require('sequelize')
 const JwtMiddleware = require('../config/Jwt-Middleware')
+const bcrypt = require('bcryptjs')
 const Op = Sequelize.Op
 
 //  @route                  POST  /api/v2/register
@@ -241,70 +243,155 @@ router.get('/approve/:id', JwtMiddleware.checkToken, async (req, res) => {
     let registerFound = await register.findOne({
       where: { id }    
     })
-
     registerFound.update({ status: true})   
-
-
     if (registerFound) {
-
       // registerFound.status = true 
       // delete registerFound.dataValues.id
       // remove id from object 
-      const {  id, reset, reject, ...rest } =  registerFound.dataValues
+      const {  id, reset, password, reject, ...rest } =  registerFound.dataValues
       // console.log('registerFound',registerFound)
       // rest.push({role: 1})
       console.log('rest',rest)
+      let userObjData = rest
+
+      userObjData.password = bcrypt.hashSync(password, 8)
 
       // res.status(200).json({
       //   status: 'ok',
-      //   rest: rest,
+      //   user: userObjData,
       // })
-
 
       if (registerFound.status && (rest.register_type == 1 || rest.register_type == 2)) {
         console.log('register_type 1 ',rest.register_type)
         // console.log('registerFound',registerFound)
         // console.log('registerFound',registerFound.dataValues)
 
-        let result = await farmer.create(rest);
+        let farmerFound = await farmer.findOne({
+          where: { username: rest.username },
+        })     
 
-        if (result) {
-          res.status(200).json({
-            status: 'ok',
-            result: result,
+        if (farmerFound) {
+          // duplicated user
+          res.json({
+            result: constants.kResultNok,
+            Error: 'Duplicated farmer username',
           })
         } else {
-          res.status(200).json({
-            status: 'result not ok',
-          })        
+          // Create farmer
+          let result = await farmer.create(userObjData);
+          if (result) {
+            res.status(200).json({
+              status: 'ok',
+              result: result,
+            })
+          } else {
+            res.status(200).json({
+              status: 'result not ok',
+            })        
+          }
         }
+
       } else  if (registerFound.status && (rest.register_type == 3 || rest.register_type == 4)) {
         console.log('register_type 2 ',rest.register_type)
         // console.log('registerFound',registerFound)
         // console.log('registerFound',registerFound.dataValues)
 
-        let result = await farmer.create(rest);
+        let userFound = await user.findOne({
+          where: { username: rest.username },
+        })     
 
-        if (result) {
-          res.status(200).json({
-            status: 'ok',
-            result: result,
+        if (userFound) {
+          // duplicated user
+          res.json({
+            result: constants.kResultNok,
+            Error: 'Duplicated user username',
           })
         } else {
-          res.status(200).json({
-            status: 'result not ok',
-          })        
+          // Create user
+          let result = await user.create(userObjData);
+          if (result) {
+            res.status(200).json({
+              status: 'ok',
+              result: result,
+            })
+          } else {
+            res.status(200).json({
+              status: 'result not ok',
+            })        
+          }
+
+          // create userrole
+          if (result) {
+            // roleId: 1 is user
+            let userroleSuccess = await userrole.create({
+              userId: id,
+              roleId: 1
+            })
+
+              if (userroleSuccess) {
+                res.json({
+                  result: constants.kResultOk,
+                  message: 'User created',
+                })
+              } else {
+                res.json({
+                  result: 'can not add user role',
+                  Error: error,
+                })
+              }        
+          } else {
+            res.json({
+              result: 'can not add user',
+              Error: error,
+            })
+          }
+
         }
-      } else { 
-        res.status(200).json({
-          status: 'registerFound.status not true or registerFound.id exist',
-        })        
       }
 
-        // res.status(200).json({
-        //   status: 'ok',
-        //   result: registerFound,
-        // })
+   // register not found
+   } else {
+      res.status(500).json({
+        result: 'register not found',
+      })
+    }
+
+  } catch (error) {
+    res.status(500).json({
+      error,
+    })
+  }
+})
+
+//  @route                  GET  /api/v2/register/hashednull
+//  @desc                   Get update hashednull for all farmers password are null
+//  @access                 Private
+router.get('/hashednull', JwtMiddleware.checkToken, async (req, res) => {
+  console.log('get hashednull is called')
+  try {
+    const farmerFound = await farmer.findAll({
+      where: {
+        [Op.and]: [
+          {
+              status: {[Op.eq] : true }
+          }, 
+          {        
+              password: { [Op.eq]: null }
+          },
+        ]
+      },   
+    })
+    const thisPassword = 'Herb@123456';
+    const hashednull = bcrypt.hashSync(thisPassword, 8)
+
+    if (farmerFound) {
+
+      // farmerFound.update({ password: hashednull})      
+
+        res.status(200).json({
+          status: 'ok',
+          hashed: hashednull,
+        })
 
     } else {
       res.status(500).json({

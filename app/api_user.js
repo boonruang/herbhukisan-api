@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const farmer = require('../models/farmer')
 const user = require('../models/user')
 const role = require('../models/role')
 const userrole = require('../models/userrole')
@@ -104,6 +105,74 @@ router.post('/login', async (req, res) => {
           username: userFound.username,
           roles: roleArr,
           status: userFound.status,
+        },
+        JwtConfig.secret,
+        {
+          expiresIn: JwtConfig.expiresIn,
+          notBefore: JwtConfig.notBefore,
+        },
+      )
+
+      res.status(200).json({
+        result: constants.kResultOk,
+        // roles: [5150],
+        // roles: roleArr,
+        accessToken: userToken,
+      })
+    } else {
+      res.json({
+        userFound: constants.kResultNok,
+        message: 'Incorrect password',
+      })
+    }
+  } else {
+    res.json({ userFound: constants.kResultNok, message: 'Incorrect username' })
+  }
+})
+
+//  @route                  POST  /api/v2/user/letin
+//  @desc                   User login
+//  @access                 Public
+router.post('/letin', async (req, res) => {
+  const { username, password } = req.body
+  console.log('farmer letin is called')
+
+  // this code is user role
+  const roleArr = [2001]
+
+
+  let farmerFound = await farmer.findOne({ 
+    where: { username: username },
+  })
+
+
+  if (farmerFound != null) {
+    // user found
+    // console.log('farmerFound not null',farmerFound)
+
+
+    if (bcrypt.compareSync(password, farmerFound.password)) {
+
+      // console.log('user compared')
+      // password match
+      // Generate user token
+
+      // res.json({
+      //   status: 'ok',
+      //   result: farmerFound,
+      // })      
+
+      
+      // if (roleArr) {
+      //   console.log('roleArr',roleArr)
+      // }
+
+      let userToken = JWT.sign(
+        {
+          id: farmerFound.id,
+          username: farmerFound.username,
+          roles: roleArr,
+          status: farmerFound.status,
         },
         JwtConfig.secret,
         {
