@@ -263,7 +263,7 @@ router.get('/approve/:id', JwtMiddleware.checkToken, async (req, res) => {
       // })
 
       // farmer and entrepreneur check
-      if (registerFound.status && (rest.register_type == 1 || rest.register_type == 2)) {
+      if (registerFound.status && (rest.register_type == 1 || rest.register_type == 2 || rest.register_type == 3)) {
         console.log('register_type 1 ',rest.register_type)
         // console.log('registerFound',registerFound)
         // console.log('registerFound',registerFound.dataValues)

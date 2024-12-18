@@ -73,11 +73,11 @@ const farmer = sequelize.define(
     },
     latitude: {
       type: Sequelize.FLOAT,
-      allowNull: false,
+      allowNull: true,
     },
     longitude: {
       type: Sequelize.FLOAT,
-      allowNull: false,
+      allowNull: true,
     },    
     status: {
       type: Sequelize.BOOLEAN,
