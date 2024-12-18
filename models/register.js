@@ -112,12 +112,20 @@ const register = sequelize.define(
       type: Sequelize.STRING,
       allowNull: true,
     }, 
+    farmer_group: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    }, 
     entrepreneur_type: {
       type: Sequelize.INTEGER,
       defaultValue: 1,
       allowNull: false,
     },     
-    entrepreneur_data: {
+    entrepreneurherbal_data: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },       
+    entrepreneurtraditionalmedicine_data: {
       type: Sequelize.STRING,
       allowNull: true,
     },       

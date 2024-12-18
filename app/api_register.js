@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const formidable = require('formidable')
 const user = require('../models/user')
+const philosopher = require('../models/philosopher')
 const role = require('../models/role')
 const farmer = require('../models/farmer')
 const farmerlog = require('../models/farmerlog')
@@ -261,6 +262,7 @@ router.get('/approve/:id', JwtMiddleware.checkToken, async (req, res) => {
       //   user: userObjData,
       // })
 
+      // farmer and entrepreneur check
       if (registerFound.status && (rest.register_type == 1 || rest.register_type == 2)) {
         console.log('register_type 1 ',rest.register_type)
         // console.log('registerFound',registerFound)
@@ -290,25 +292,25 @@ router.get('/approve/:id', JwtMiddleware.checkToken, async (req, res) => {
             })        
           }
         }
-
-      } else  if (registerFound.status && (rest.register_type == 3 || rest.register_type == 4)) {
+        // philosopher check
+      } else  if (registerFound.status && rest.register_type == 3) {
         console.log('register_type 2 ',rest.register_type)
         // console.log('registerFound',registerFound)
         // console.log('registerFound',registerFound.dataValues)
 
-        let userFound = await user.findOne({
-          where: { username: rest.username },
+        let philosopherFound = await philosopher.findOne({
+          where: { philosophername: rest.philosophername },
         })     
 
-        if (userFound) {
-          // duplicated user
+        if (philosopherFound) {
+          // duplicated philosopher
           res.json({
             result: constants.kResultNok,
-            Error: 'Duplicated user username',
+            Error: 'Duplicated philosopher philosophername',
           })
         } else {
-          // Create user
-          let result = await user.create(userObjData);
+          // Create philosopher
+          let result = await philosopher.create(userObjData);
           if (result) {
             res.status(200).json({
               status: 'ok',
@@ -318,32 +320,6 @@ router.get('/approve/:id', JwtMiddleware.checkToken, async (req, res) => {
             res.status(200).json({
               status: 'result not ok',
             })        
-          }
-
-          // create userrole
-          if (result) {
-            // roleId: 1 is user
-            let userroleSuccess = await userrole.create({
-              userId: id,
-              roleId: 1
-            })
-
-              if (userroleSuccess) {
-                res.json({
-                  result: constants.kResultOk,
-                  message: 'User created',
-                })
-              } else {
-                res.json({
-                  result: 'can not add user role',
-                  Error: error,
-                })
-              }        
-          } else {
-            res.json({
-              result: 'can not add user',
-              Error: error,
-            })
           }
 
         }
