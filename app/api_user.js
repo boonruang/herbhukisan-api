@@ -157,15 +157,6 @@ router.post('/letin', async (req, res) => {
       // password match
       // Generate user token
 
-      // res.json({
-      //   status: 'ok',
-      //   result: farmerFound,
-      // })      
-
-      
-      // if (roleArr) {
-      //   console.log('roleArr',roleArr)
-      // }
 
       let userToken = JWT.sign(
         {

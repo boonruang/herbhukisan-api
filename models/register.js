@@ -90,16 +90,29 @@ const register = sequelize.define(
       type: Sequelize.INTEGER,
       defaultValue: 1,
       allowNull: false,
-    },      
+    },  
+    register_data: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },         
     farmer_type: {
       type: Sequelize.INTEGER,
       defaultValue: 1,
       allowNull: false,
     },     
-    related_with: {
+    farmer_data: {
       type: Sequelize.STRING,
       allowNull: true,
-    },    
+    }, 
+    entrepreneur_type: {
+      type: Sequelize.INTEGER,
+      defaultValue: 1,
+      allowNull: false,
+    },     
+    entrepreneur_data: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },       
   },
   {
     timestamps: false,
