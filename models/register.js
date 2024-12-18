@@ -71,6 +71,14 @@ const register = sequelize.define(
       type: Sequelize.STRING,
       allowNull: true,
     },
+    latitude: {
+      type: Sequelize.FLOAT,
+      allowNull: false,
+    },
+    longitude: {
+      type: Sequelize.FLOAT,
+      allowNull: false,
+    },    
     status: {
       type: Sequelize.BOOLEAN,
       allowNull: true,
