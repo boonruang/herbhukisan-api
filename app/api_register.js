@@ -17,7 +17,7 @@ const Op = Sequelize.Op
 //  @desc                   Post add register
 //  @access                 public
 router.post('/', async (req, res) => {
-  console.log('registerregister add is called')
+  console.log('registerr add is called')
   
   try {
     const form = new formidable.IncomingForm();

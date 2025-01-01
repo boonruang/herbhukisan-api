@@ -1,10 +1,8 @@
 const Sequelize = require('sequelize')
-const sequelize = require('../config/db-instance');
-const farmergroup = require('./farmergroup');
-const collaborativefarm = require('./collaborativefarm');
+const sequelize = require('../config/db-instance')
 
-const farmer = sequelize.define(
-  'farmers',
+const register = sequelize.define(
+  'registers',
   {
     // attributes
     id: {
@@ -55,7 +53,7 @@ const farmer = sequelize.define(
     },
     postcode: {
       type: Sequelize.STRING,
-      allowNull: true,
+      allowNull: false,
     },    
     tel: {
       type: Sequelize.STRING,
@@ -80,41 +78,66 @@ const farmer = sequelize.define(
     longitude: {
       type: Sequelize.FLOAT,
       allowNull: true,
-    },  
-    area: {
-      type: Sequelize.STRING,
-      allowNull: true,
-    },  
-    herbal: {
-      type: Sequelize.STRING,
-      allowNull: true,
-    },       
-    output: {
-      type: Sequelize.STRING,
-      allowNull: true,
-    },      
+    },    
     status: {
       type: Sequelize.BOOLEAN,
       allowNull: true,
       defaultValue: false,
-    },
-    farmergroupId: {
+    },   
+    reset: {
+      type: Sequelize.BOOLEAN,
+      allowNull: true,
+      defaultValue: false,
+    },       
+    reject: {
+      type: Sequelize.BOOLEAN,
+      allowNull: true,
+      defaultValue: false,
+    },   
+    register_type: {
+      type: Sequelize.INTEGER,
+      defaultValue: 1,
+      allowNull: false,
+    },  
+    register_data: {
       type: Sequelize.STRING,
       allowNull: true,
-    },   
-    collaborativefarmId: {
+    },         
+    farmer_type: {
+      type: Sequelize.INTEGER,
+      defaultValue: 1,
+      allowNull: false,
+    },     
+    farmer_data: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    }, 
+    farmer_group: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    }, 
+    entrepreneur_type: {
+      type: Sequelize.INTEGER,
+      defaultValue: 1,
+      allowNull: false,
+    },     
+    entrepreneurherbal_data: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },       
+    entrepreneurtraditionalmedicine_data: {
       type: Sequelize.STRING,
       allowNull: true,
     },       
   },
   {
     timestamps: false,
-    tableName: "farmers",
+    tableName: "registers",
   },
 )
 
 ;(async () => {
-  await farmer.sync({ force: false })
+  await register.sync({ force: false })
 })()
 
-module.exports = farmer
+module.exports = register

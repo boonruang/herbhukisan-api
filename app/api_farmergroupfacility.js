@@ -2,30 +2,30 @@ const express = require('express')
 const constants = require('../config/constant')
 const formidable = require('formidable')
 const router = express.Router()
-const farmergroupfarmer = require('../models/farmergroupfarmer')
+const farmergroupfacility = require('../models/farmergroupfacility')
 const farmergroup = require('../models/farmergroup')
-const farmer = require('../models/farmer')
+const facility = require('../models/facility')
 const JwtMiddleware = require('../config/Jwt-Middleware')
 
-//  @route                  GET  /api/v2/farmergroupfarmer/list
-//  @desc                   list all farmergroupfarmers
+//  @route                  GET  /api/v2/farmergroupfacility/list
+//  @desc                   list all farmergroupfacilitys
 //  @access                 Private
 router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
-  console.log('get farmergroupfarmer list API called')
+  console.log('get farmergroupfacility list API called')
   try {
-    const farmergroupfarmerFound = await farmergroupfarmer.findAll({
+    const farmergroupfacilityFound = await farmergroupfacility.findAll({
       // include: {
       //    model: herbal,
       //    through: {
-      //       model: farmergroupfarmer
+      //       model: farmergroupfacility
       //    }
       //   },
     })
-    if (farmergroupfarmerFound) {
-      console.log('farmergroupfarmerFound in list API: ', farmergroupfarmerFound)
+    if (farmergroupfacilityFound) {
+      console.log('farmergroupfacilityFound in list API: ', farmergroupfacilityFound)
       res.status(200).json({
         status: 'ok',
-        result: farmergroupfarmerFound,
+        result: farmergroupfacilityFound,
       })
     } else {
       res.status(500).json({
@@ -39,23 +39,23 @@ router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
   }
 })
 
-//  @route                  GET  /api/v2/farmergroupfarmer/:id
-//  @desc                   Get farmergroupfarmer by Id
+//  @route                  GET  /api/v2/farmergroupfacility/:id
+//  @desc                   Get farmergroupfacility by Id
 //  @access                 Private
 router.get('/:id', JwtMiddleware.checkToken, async (req, res) => {
-  console.log('get farmergroupfarmer by Id API called')
+  console.log('get farmergroupfacility by Id API called')
   let id = req.params.id
 
   try {
-    const farmergroupfarmerFound = await farmergroupfarmer.findOne({
+    const farmergroupfacilityFound = await farmergroupfacility.findOne({
       where: { id },
     })
 
-    if (farmergroupfarmerFound) {
-      // res.status(200).json(farmergroupfarmerFound)
+    if (farmergroupfacilityFound) {
+      // res.status(200).json(farmergroupfacilityFound)
       res.status(200).json({
         status: 'ok',
-        result: farmergroupfarmerFound,
+        result: farmergroupfacilityFound,
       })
     } else {
       res.status(500).json({
@@ -69,17 +69,17 @@ router.get('/:id', JwtMiddleware.checkToken, async (req, res) => {
   }
 })
 
-//  @route                  POST  /api/v2/farmergroupfarmer
-//  @desc                   Post add farmergroupfarmer
+//  @route                  POST  /api/v2/farmergroupfacility
+//  @desc                   Post add farmergroupfacility
 //  @access                 Private
 router.post('/', JwtMiddleware.checkToken, async (req, res) => {
-  console.log('farmergroupfarmer add is called')
+  console.log('farmergroupfacility add is called')
   try {
     const form = new formidable.IncomingForm();
     console.log('form.parse(req)',form.parse(req))
 
     form.parse(req, async (error, fields, files) => {
-      let result = await farmergroupfarmer.create(fields);
+      let result = await farmergroupfacility.create(fields);
       // result = await uploadImage(files, result);
       console.log('req fields',fields)
 

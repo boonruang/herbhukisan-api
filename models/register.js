@@ -99,36 +99,52 @@ const register = sequelize.define(
       defaultValue: 1,
       allowNull: false,
     },  
-    register_data: {
+    farmergroupId: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },   
+    collaborativefarmId: {
       type: Sequelize.STRING,
       allowNull: true,
     },         
-    farmer_type: {
-      type: Sequelize.INTEGER,
-      defaultValue: 1,
-      allowNull: false,
-    },     
-    farmer_data: {
+    entrepreneurherbalId: {
       type: Sequelize.STRING,
       allowNull: true,
-    }, 
-    farmer_group: {
+    },         
+    entrepreneurtraditionalmedicineId: {
       type: Sequelize.STRING,
       allowNull: true,
-    }, 
-    entrepreneur_type: {
-      type: Sequelize.INTEGER,
-      defaultValue: 1,
-      allowNull: false,
-    },     
-    entrepreneurherbal_data: {
-      type: Sequelize.STRING,
-      allowNull: true,
-    },       
-    entrepreneurtraditionalmedicine_data: {
-      type: Sequelize.STRING,
-      allowNull: true,
-    },       
+    },         
+    // farmer_type: {
+    //   type: Sequelize.INTEGER,
+    //   defaultValue: 1,
+    //   allowNull: false,
+    // },     
+    // entrepreneur_type: {
+    //   type: Sequelize.INTEGER,
+    //   defaultValue: 1,
+    //   allowNull: false,
+    // },
+    // register_data: {
+    //   type: Sequelize.STRING,
+    //   allowNull: true,
+    // },         
+    // farmer_data: {
+    //   type: Sequelize.STRING,
+    //   allowNull: true,
+    // }, 
+    // farmer_group: {
+    //   type: Sequelize.STRING,
+    //   allowNull: true,
+    // }, 
+    // entrepreneurherbal_data: {
+    //   type: Sequelize.STRING,
+    //   allowNull: true,
+    // },       
+    // entrepreneurtraditionalmedicine_data: {
+    //   type: Sequelize.STRING,
+    //   allowNull: true,
+    // },       
   },
   {
     timestamps: false,

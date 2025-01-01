@@ -26,8 +26,8 @@ router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
         }        
        }, 
        order: [
-        ['id', 'ASC'],
-        ],       
+        ['id','ASC']
+      ],    
     })
     if (farmergroupFound) {
       console.log('farmergroupFound in list API: ', farmergroupFound)
@@ -55,8 +55,8 @@ router.get('/list/noauth', async (req, res) => {
   try {
     const farmergroupFound = await farmergroup.findAll({
       order: [
-        ['id', 'ASC'],
-    ],     
+        ['id','DESC']
+      ],     
     })
     if (farmergroupFound) {
       console.log('farmergroupFound in list API: ', farmergroupFound)

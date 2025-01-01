@@ -1,10 +1,10 @@
 const Sequelize = require('sequelize')
 const sequelize = require('../config/db-instance')
-const farmer = require('./farmer')
+const facility = require('./facility')
 const farmergroup = require('./farmergroup')
 
-const farmergroupfarmer = sequelize.define(
-  'farmergroupfarmers',
+const farmergroupfacility = sequelize.define(
+  'farmergroupfacilities',
   {
     id: {
       type: Sequelize.INTEGER,
@@ -16,35 +16,40 @@ const farmergroupfarmer = sequelize.define(
         type: Sequelize.INTEGER,
         allowNull: false,      
       },
-    farmerId: {
+    facilityId: {
         type: Sequelize.INTEGER,
         allowNull: false,         
       },
+    amount: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+      },        
   },
   {
     timestamps: false,
-    tableName: "farmergroupfarmers",
+    tableName: "farmergroupfacilities",
   },
 )
 
-farmergroup.belongsToMany(farmer,{
+farmergroup.belongsToMany(facility,{
   through: {
-    model: "farmergroupfarmers",
+    model: "farmergroupfacilities",
     unique: false
 },
   constraints: false 
 })
 
-farmer.belongsToMany(farmergroup,{
+facility.belongsToMany(farmergroup,{
   through: {
-    model: "farmergroupfarmers",
+    model: "farmergroupfacilities",
     unique: false
 },
   constraints: false 
 })
+
 
 ;(async () => {
-  await farmergroupfarmer.sync({ force: false })
+  await farmergroupfacility.sync({ force: false })
 })()
 
-module.exports = farmergroupfarmer
+module.exports = farmergroupfacility

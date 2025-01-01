@@ -71,6 +71,18 @@ const farmergroup = sequelize.define(
       type: Sequelize.FLOAT,
       allowNull: false,
     },
+    area: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },  
+    herbal: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },       
+    output: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },    
   },
   {
     timestamps: false,

@@ -25,7 +25,7 @@ router.get('/list',async (req, res) => {
         ]
       },
       order: [
-        ['id','ASC']
+        ['id','DESC']
       ],
     })
     if (collaborativefarmFound) {

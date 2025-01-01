@@ -32,6 +32,10 @@ const user = sequelize.define(
       allowNull: false,
       defaultValue: true,
     },
+    description: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
     roleArr : {
       type: Sequelize.VIRTUAL,
       allowNull: true,

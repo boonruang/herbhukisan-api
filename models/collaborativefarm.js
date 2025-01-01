@@ -47,10 +47,6 @@ const collaborativefarm = sequelize.define(
       type: Sequelize.STRING,
       allowNull: false,
     },   
-    location: {
-      type: Sequelize.STRING,
-      allowNull: false,
-    },  
     member: {
       type: Sequelize.STRING,
       allowNull: true,
@@ -75,6 +71,14 @@ const collaborativefarm = sequelize.define(
       type: Sequelize.STRING,
       allowNull: true,
     },
+    latitude: {
+      type: Sequelize.FLOAT,
+      allowNull: true,
+    },
+    longitude: {
+      type: Sequelize.FLOAT,
+      allowNull: true,
+    },     
     status: {
       type: Sequelize.BOOLEAN,
       allowNull: true,

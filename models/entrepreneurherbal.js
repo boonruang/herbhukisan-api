@@ -46,11 +46,7 @@ const entrepreneurherbal = sequelize.define(
     brand: {
       type: Sequelize.STRING,
       allowNull: false,
-    },       
-    location: {
-      type: Sequelize.STRING,
-      allowNull: false,
-    },  
+    },         
     source: {
       type: Sequelize.STRING,
       allowNull: true,
@@ -70,7 +66,15 @@ const entrepreneurherbal = sequelize.define(
     reference: {
       type: Sequelize.STRING,
       allowNull: true,
-    },   
+    },  
+    latitude: {
+      type: Sequelize.FLOAT,
+      allowNull: true,
+    },
+    longitude: {
+      type: Sequelize.FLOAT,
+      allowNull: true,
+    },      
     status: {
       type: Sequelize.BOOLEAN,
       allowNull: true,
