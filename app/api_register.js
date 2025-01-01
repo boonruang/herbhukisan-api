@@ -12,6 +12,10 @@ const Sequelize = require('sequelize')
 const JwtMiddleware = require('../config/Jwt-Middleware')
 const bcrypt = require('bcryptjs')
 const Op = Sequelize.Op
+const farmergroup = require('../models/farmergroup')
+const collaborativefarm = require('../models/collaborativefarm')
+const entrepreneurherbal = require('../models/entrepreneurherbal')
+const entrepreneurthaitraditionalmedical = require('../models/entrepreneurthaitraditionalmedical')
 
 //  @route                  POST  /api/v2/register
 //  @desc                   Post add register
@@ -58,11 +62,48 @@ router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
       ],
     })
     if (registerFound) {
-      console.log('registerFound in list API: ', registerFound)
-      res.status(200).json({
-        status: 'ok',
-        result: registerFound,
+
+      // console.log('registerFound in list API: ', registerFound)
+
+      const newResults =  registerFound.map(async (result) => {
+
+        if (result?.farmergroupId?.length > 0 && result?.farmergroupId != 'null' && result?.farmergroupId != 'undefined') {
+          // console.log('result farmergroupId ', result?.id+' => '+result?.farmergroupId)
+          const farmergroupFound = await farmergroup.findOne({
+            where: { id : result?.farmergroupId  }    
+          })
+            // console.log('farmergroupFound ', farmergroupFound?.farmergroupname)
+            result.farmergroupId = farmergroupFound?.farmergroupname
+        }
+
+        if (result?.collaborativefarmId?.length > 0 && result?.collaborativefarmId != 'null' && result?.collaborativefarmId != 'undefined') {
+          // console.log('result collaborativefarmId ', result?.id+' => '+result?.collaborativefarmId)
+          const collaborativefarmFound = await collaborativefarm.findOne({
+            where: { id : result?.collaborativefarmId  }    
+          })
+            // console.log('collaborativefarmFound ', collaborativefarmFound?.name)
+            result.collaborativefarmId = collaborativefarmFound?.name          
+        }
+
+        return result
       })
+
+      return Promise.all(newResults).then((data) => {
+        // console.log("data", data);
+        res.status(200).json({
+          status: 'ok',
+          result: data,
+        })
+      })
+
+
+      // res.status(200).json({
+      //   status: 'ok',
+      //   result: registerFound,
+      // })
+
+
+
     } else {
       res.status(500).json({
         status: 'nok',
