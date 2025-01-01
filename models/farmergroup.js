@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize')
-const sequelize = require('../config/db-instance')
+const sequelize = require('../config/db-instance');
+const facility = require('./facility');
 
 const farmergroup = sequelize.define(
   'farmergroup',
@@ -81,6 +82,10 @@ const farmergroup = sequelize.define(
     },       
     output: {
       type: Sequelize.STRING,
+      allowNull: true,
+    },    
+    facility: {
+      type: Sequelize.TEXT,
       allowNull: true,
     },    
   },

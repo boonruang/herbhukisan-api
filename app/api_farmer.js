@@ -168,4 +168,48 @@ router.post('/', JwtMiddleware.checkToken, async (req, res) => {
   }
 });
 
+//  @route                  DELETE  /api/v2/farmer/:id
+//  @desc                   Delete by id
+//  @access                 Private
+router.delete('/:id', JwtMiddleware.checkToken, async (req, res) => {
+  try {
+    const farmerFound = await farmer.findOne({ where: { id: req.params.id } })
+    if (farmerFound) {
+      // farmer found
+      const farmerDeleted = await farmer.destroy({
+        where: {
+          id: req.params.id,
+        },
+      })
+
+      if (farmerDeleted) {
+        // farmer deleted
+        console.log(`farmer id: ${req.params.id} deleted`)
+        res.status(200).json({
+          result: constants.kResultOk,
+          message: `farmer id: ${req.params.id} deleted`,
+        })
+      } else {
+        // farmer delete failed
+        console.log(`farmer id: ${req.params.id} delete failed`)
+        res.status(500).json({
+          result: constants.kResultNok,
+          message: `farmer id: ${req.params.id} delete failed`,
+        })
+      }
+    } else {
+      // farmer not found
+      res.status(500).json({
+        result: constants.kResultNok,
+        message: 'farmer not found',
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      result: constants.kResultNok,
+      Error: error.toString(),
+    })
+  }
+})
+
 module.exports = router

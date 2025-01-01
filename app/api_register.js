@@ -85,6 +85,24 @@ router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
             result.collaborativefarmId = collaborativefarmFound?.name          
         }
 
+        if (result?.entrepreneurherbalId?.length > 0 && result?.entrepreneurherbalId != 'null' && result?.entrepreneurherbalId != 'undefined') {
+          // console.log('result entrepreneurherbalId ', result?.id+' => '+result?.entrepreneurherbalId)
+          const entrepreneurherbalFound = await entrepreneurherbal.findOne({
+            where: { id : result?.entrepreneurherbalId  }    
+          })
+            // console.log('entrepreneurherbalFound ', entrepreneurherbalFound?.name)
+            result.entrepreneurherbalId = entrepreneurherbalFound?.name          
+          }        
+
+          if (result?.entrepreneurtraditionalmedicineId?.length > 0 && result?.entrepreneurtraditionalmedicineId != 'null' && result?.entrepreneurtraditionalmedicineId != 'undefined') {
+            // console.log('result entrepreneurtraditionalmedicineId ', result?.id+' => '+result?.entrepreneurtraditionalmedicineId)
+            const entrepreneurthaitraditionalmedicalFound = await entrepreneurthaitraditionalmedical.findOne({
+              where: { id : result?.entrepreneurtraditionalmedicineId  }    
+            })
+              // console.log('entrepreneurthaitraditionalmedicalFound ', entrepreneurthaitraditionalmedicalFound?.name)
+              result.entrepreneurtraditionalmedicineId = entrepreneurthaitraditionalmedicalFound?.name          
+          }          
+
         return result
       })
 
@@ -175,10 +193,60 @@ router.get('/status', JwtMiddleware.checkToken, async (req, res) => {
     })
 
     if (registerFound) {
-      res.status(200).json({
-        status: 'ok',
-        result: registerFound,
+      // res.status(200).json({
+      //   status: 'ok',
+      //   result: registerFound,
+      // })
+
+      const newResults =  registerFound.map(async (result) => {
+
+        if (result?.farmergroupId?.length > 0 && result?.farmergroupId != 'null' && result?.farmergroupId != 'undefined') {
+          // console.log('result farmergroupId ', result?.id+' => '+result?.farmergroupId)
+          const farmergroupFound = await farmergroup.findOne({
+            where: { id : result?.farmergroupId  }    
+          })
+            // console.log('farmergroupFound ', farmergroupFound?.farmergroupname)
+            result.farmergroupId = farmergroupFound?.farmergroupname
+        }
+
+        if (result?.collaborativefarmId?.length > 0 && result?.collaborativefarmId != 'null' && result?.collaborativefarmId != 'undefined') {
+          // console.log('result collaborativefarmId ', result?.id+' => '+result?.collaborativefarmId)
+          const collaborativefarmFound = await collaborativefarm.findOne({
+            where: { id : result?.collaborativefarmId  }    
+          })
+            // console.log('collaborativefarmFound ', collaborativefarmFound?.name)
+            result.collaborativefarmId = collaborativefarmFound?.name          
+        }
+
+        if (result?.entrepreneurherbalId?.length > 0 && result?.entrepreneurherbalId != 'null' && result?.entrepreneurherbalId != 'undefined') {
+          // console.log('result entrepreneurherbalId ', result?.id+' => '+result?.entrepreneurherbalId)
+          const entrepreneurherbalFound = await entrepreneurherbal.findOne({
+            where: { id : result?.entrepreneurherbalId  }    
+          })
+            // console.log('entrepreneurherbalFound ', entrepreneurherbalFound?.name)
+            result.entrepreneurherbalId = entrepreneurherbalFound?.name          
+          }        
+
+          if (result?.entrepreneurtraditionalmedicineId?.length > 0 && result?.entrepreneurtraditionalmedicineId != 'null' && result?.entrepreneurtraditionalmedicineId != 'undefined') {
+            // console.log('result entrepreneurtraditionalmedicineId ', result?.id+' => '+result?.entrepreneurtraditionalmedicineId)
+            const entrepreneurthaitraditionalmedicalFound = await entrepreneurthaitraditionalmedical.findOne({
+              where: { id : result?.entrepreneurtraditionalmedicineId  }    
+            })
+              // console.log('entrepreneurthaitraditionalmedicalFound ', entrepreneurthaitraditionalmedicalFound?.name)
+              result.entrepreneurtraditionalmedicineId = entrepreneurthaitraditionalmedicalFound?.name          
+          }          
+
+        return result
       })
+
+      return Promise.all(newResults).then((data) => {
+        // console.log("data", data);
+        res.status(200).json({
+          status: 'ok',
+          result: data,
+        })
+      })
+
     } else {
       res.status(500).json({
         result: 'not found',
