@@ -30,7 +30,6 @@ app.use('/api/v2/entrepreneurthaitraditionalmedical', require('./api_entrepreneu
 app.use('/api/v2/farmerlog', require('./api_farmerlog'))
 app.use('/api/v2/farmergroup', require('./api_farmergroup'))
 app.use('/api/v2/farmergroupherbal', require('./api_farmergroupherbal'))
-app.use('/api/v2/facility', require('./api_facility'))
 app.use('/api/v2/property', require('./api_property'))
 app.use('/api/v2/herbalproperty', require('./api_herbalproperty'))
 app.use('/api/v2/character', require('./api_character'))

@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize')
 const sequelize = require('../config/db-instance');
-const facility = require('./facility');
 
 const farmergroup = sequelize.define(
   'farmergroup',

@@ -11,10 +11,6 @@ const philosopher = sequelize.define(
       autoIncrement: true,
       allowNull: false,
     },
-    name: {
-      type: Sequelize.STRING,
-      allowNull: false,
-    },
     firstname: {
       type: Sequelize.STRING,
       allowNull: false,
@@ -55,10 +51,6 @@ const philosopher = sequelize.define(
       type: Sequelize.STRING,
       allowNull: true,
     },      
-    location: {
-      type: Sequelize.STRING,
-      allowNull: false,
-    },  
     knowledge: {
       type: Sequelize.STRING,
       allowNull: true,
@@ -74,7 +66,15 @@ const philosopher = sequelize.define(
     photo: {
       type: Sequelize.STRING,
       allowNull: true,
-    },    
+    }, 
+    latitude: {
+      type: Sequelize.FLOAT,
+      allowNull: false,
+    },
+    longitude: {
+      type: Sequelize.FLOAT,
+      allowNull: false,
+    },       
     status: {
       type: Sequelize.BOOLEAN,
       allowNull: true,
