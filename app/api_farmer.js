@@ -212,4 +212,51 @@ router.delete('/:id', JwtMiddleware.checkToken, async (req, res) => {
   }
 })
 
+//  @route                  PUT  /api/v2/farmer/
+//  @desc                   Update farmer use formidable on reactjs farmerCreate
+//  @access                 Private
+router.put('/', JwtMiddleware.checkToken, async (req, res) => {
+  try {
+    const form = new formidable.IncomingForm()
+    form.parse(req, async (error, fields, files) => {
+      if (fields.password) {
+        console.log('Password not empty need to be crypted')
+        fields.password = bcrypt.hashSync(fields.password, 8)
+      }
+      let status = fields.status
+      // var roleId = fields.roleId
+
+      const { id, ...rest } = fields
+
+      console.log('rest data', rest)
+
+      console.log('Formidable Update fields: ', fields)
+      console.log('Formidable Update Error: ', error)
+      let result = await farmer.update(
+        {rest}
+        ,
+        { where: { id: fields.id } },
+      )
+      if (result) {
+        console.log('Formidable Updated: ', result)
+        res.json({
+          result: constants.kResultOk,
+          message: JSON.stringify(result),
+        })
+      } else {
+        console.log('Formidable update Error: ', error)
+        res.json({
+          result: constants.kResultNok,
+          Error: error,
+        })
+      }
+    })
+  } catch (error) {
+    res.json({
+      result: constants.kResultNok,
+      message: JSON.stringify(error),
+    })
+  }
+})
+
 module.exports = router
